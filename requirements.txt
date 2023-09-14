@@ -1,2 +1,4 @@
 ﻿python-dotenv
 pytest
+
+azure-storage-blob
