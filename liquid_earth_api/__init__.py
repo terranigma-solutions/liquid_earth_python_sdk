@@ -7,8 +7,8 @@ import subsurface as ss
 
 
 def push_data_to_le_space(geo_model: gp.data.GeoModel):
-    # response = requests.get("http://localhost:7071/api/AddDataToSpace")
-    if True:
+    response = requests.post("http://localhost:7071/api/AddDataToSpace")
+    if False:
       _push_binaries(geo_model)
 
 
