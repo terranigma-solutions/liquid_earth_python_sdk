@@ -1,4 +1,5 @@
 import json
+from dataclasses import asdict
 
 import requests
 from azure.storage.blob import BlobClient
@@ -6,24 +7,50 @@ import gempy as gp
 import subsurface as ss
 import socket
 
-
-def push_data_to_le_space(geo_model: gp.data.GeoModel):
-    response = requests.post(f"http://{socket.gethostname()}.local:7071/api/AddDataToSpace")
-    if False:
-      _push_binaries(geo_model)
+from data.schemas import PostData
 
 
-def _push_binaries(geo_model):
-    # response = requests.get("http://localhost:7071/api/AddDataToSpace")
-    sas_dict = {
-        "sasForTestLe": "https://leprojectsdata.blob.core.windows.net/74d3edaeaf0d406a81d867d3a3df0c4e/static_mesh%5Ctest.le?sv=2023-08-03&se=2023-09-14T15%3A31%3A26Z&sr=b&sp=w&sig=fgNaewJjMjzNYJ%2Ff3pAP4Vut%2FydeIgoyxy8JyZXDOZE%3D",
-        "sasForTestJson": "https://leprojectsdata.blob.core.windows.net/74d3edaeaf0d406a81d867d3a3df0c4e/static_mesh%5Ctest.json?sv=2023-08-03&se=2023-09-14T15%3A31%3A26Z&sr=b&sp=w&sig=whBnknPM0ILm2XqDryW6SRO8IaeEgjn1e1t9DE8%2Bdyc%3D"
-    }
-    sas = "https://leprojectsdata.blob.core.windows.net/74d3edaeaf0d406a81d867d3a3df0c4e/static_mesh%5Ctest?sv=2023-08-03&se=2023-09-14T15%3A02%3A56Z&sr=b&sp=w&sig=RnbPEupD36MSgMIqvBIAJ8WiaXVKQX6GDmlNeKkNQXI%3D"
+def get_available_projects(token: str):
+
+    response = requests.get(
+        url=f"http://{socket.gethostname()}.local:7071/api/GetAvailableProjects",
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+    )
+
+    print(response.json())
+    return response.json()
+
+
+def push_data_to_le_space(geo_model: gp.data.GeoModel, post_data: PostData, token: str):
+    response = requests.post(
+        url=f"http://{socket.gethostname()}.local:7071/api/AddDataToSpace",
+        json=asdict(post_data),
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+    )
+    # If request is 200 deserialize the json response in a dictionary
+    if response.status_code == 200:
+        sas_dict = response.json()
+        try:
+            uploading_files_response = _push_binaries(geo_model, sas_dict)
+            return True
+        except:
+            print("Error uploading files")
+            return False
+    else:
+        print("Error getting SAS")
+        return False
+
+
+def _push_binaries(geo_model, sas_dict: dict):
     meshes: ss.UnstructuredData = geo_model.solutions.raw_arrays.meshes_to_subsurface()
     data, header = meshes.to_binary()
     blob_client = BlobClient.from_blob_url(sas_dict["sasForTestLe"])
     response = blob_client.upload_blob(data, overwrite=True)
     blob_client = BlobClient.from_blob_url(sas_dict["sasForTestJson"])
     response = blob_client.upload_blob(json.dumps(header), overwrite=True)
+    return response
     print(response)
