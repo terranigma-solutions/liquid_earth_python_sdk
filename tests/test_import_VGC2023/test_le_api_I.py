@@ -17,6 +17,7 @@ def test_get_available_projects():
 def test_get_deeplink():
     clashach_project: PostData = _get_clashach_project()
     deep_link = get_deep_link(clashach_project, token=user_token)
+    print(deep_link)
 
 
 def test_upload_data_to_space():

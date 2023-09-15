@@ -9,48 +9,55 @@ import socket
 
 from data.schemas import PostData
 
+LOCAL = False  # Set to True for local development, False for server
+
+BASE_URL = f"https://apim-liquidearth.azure-api.net/python" if not LOCAL else f"http://{socket.gethostname()}.local:7071/api"
+
+
+def make_url(endpoint: str) -> str:
+    return f"{BASE_URL}/{endpoint}"
+
 
 def get_available_projects(token: str):
-
     response = requests.get(
-        url=f"http://{socket.gethostname()}.local:7071/api/GetAvailableProjects",
+        url=f"{BASE_URL}/GetAvailableProjects",
         headers={
             "Authorization": f"Bearer {token}"
         }
     )
     if response.status_code != 200:
         # add the response to the error
-        raise ValueError( f"Error getting available projects. Response: {response.reason}")
+        raise ValueError(f"Error getting available projects. Response: {response.reason}")
     else:
         return response.json()
 
 
-def get_deep_link(post_data: PostData, token:str):
+def get_deep_link(post_data: PostData, token: str):
     response = requests.post(
-        url=f"http://{socket.gethostname()}.local:7071/api/GetDeepLinkFromSpace",
+        url = f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),
         headers={
             "Authorization": f"Bearer {token}"
         }
     )
-    
+
     # if request 200 return the deep link from text/plain
     if response.status_code == 200:
         return response.text
     else:
         print("Error getting deep link")
         return False
-    
+
 
 def push_data_to_le_space(geo_model: gp.data.GeoModel, post_data: PostData, token: str):
     response = requests.post(
-        url=f"http://{socket.gethostname()}.local:7071/api/AddDataToSpace",
+        url=f"{BASE_URL}/AddDataToSpace",
         json=asdict(post_data),
         headers={
             "Authorization": f"Bearer {token}"
         }
     )
-    
+
     # If request is 200 deserialize the json response in a dictionary
     if response.status_code == 200:
         sas_dict = response.json()
