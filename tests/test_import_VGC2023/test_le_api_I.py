@@ -1,4 +1,4 @@
-﻿from data.schemas import PostData
+﻿from liquid_earth_api.data.schemas import PostData
 from gempy.core.data.enumerators import ExampleModel
 from liquid_earth_api import push_data_to_le_space, get_available_projects, get_deep_link
 import gempy as gp

@@ -7,7 +7,7 @@ import gempy as gp
 import subsurface as ss
 import socket
 
-from data.schemas import PostData
+from liquid_earth_api.data.schemas import PostData
 
 LOCAL = False  # Set to True for local development, False for server
 
