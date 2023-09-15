@@ -18,10 +18,29 @@ def get_available_projects(token: str):
             "Authorization": f"Bearer {token}"
         }
     )
+    if response.status_code != 200:
+        # add the response to the error
+        raise ValueError( f"Error getting available projects. Response: {response.reason}")
+    else:
+        return response.json()
 
-    print(response.json())
-    return response.json()
 
+def get_deep_link(post_data: PostData, token:str):
+    response = requests.post(
+        url=f"http://{socket.gethostname()}.local:7071/api/GetDeepLinkFromSpace",
+        json=asdict(post_data),
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+    )
+    
+    # if request 200 return the deep link from text/plain
+    if response.status_code == 200:
+        return response.text
+    else:
+        print("Error getting deep link")
+        return False
+    
 
 def push_data_to_le_space(geo_model: gp.data.GeoModel, post_data: PostData, token: str):
     response = requests.post(
@@ -31,6 +50,7 @@ def push_data_to_le_space(geo_model: gp.data.GeoModel, post_data: PostData, toke
             "Authorization": f"Bearer {token}"
         }
     )
+    
     # If request is 200 deserialize the json response in a dictionary
     if response.status_code == 200:
         sas_dict = response.json()
