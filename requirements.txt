@@ -2,7 +2,5 @@
 pytest
 
 azure-storage-blob
-gempy~=2023.1.0b5
 setuptools~=65.5.1
 requests~=2.31.0
-subsurface~=0.2.10.dev60+g204cdbc.d20230809
