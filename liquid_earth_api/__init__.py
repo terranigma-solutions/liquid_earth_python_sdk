@@ -4,10 +4,11 @@ import requests
 from azure.storage.blob import BlobClient
 import gempy as gp
 import subsurface as ss
+import socket
 
 
 def push_data_to_le_space(geo_model: gp.data.GeoModel):
-    response = requests.post("http://localhost:7071/api/AddDataToSpace")
+    response = requests.post(f"http://{socket.gethostname()}.local:7071/api/AddDataToSpace")
     if False:
       _push_binaries(geo_model)
 
