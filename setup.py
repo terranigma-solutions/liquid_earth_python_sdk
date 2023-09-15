@@ -1,8 +1,10 @@
 ﻿from setuptools import setup, find_packages
 
+
 def read_requirements(file_name):
     with open(file_name, "r", encoding="utf-8") as f:
         return [line.strip() for line in f.readlines()]
+
 
 setup(
     name='LiquidEarthAPI',
