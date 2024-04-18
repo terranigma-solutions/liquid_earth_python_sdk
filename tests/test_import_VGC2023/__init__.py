@@ -1,4 +1,4 @@
-﻿from liquid_earth_api import push_data_to_le_space
+﻿from liquid_earth_api.upload_files import push_data_to_le_space
 
 
 def import_clashach():
