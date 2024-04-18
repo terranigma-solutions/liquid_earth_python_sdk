@@ -15,7 +15,7 @@ def push_data_to_le_space(geo_model: gp.data.GeoModel, post_data: PostData, toke
         url=f"{BASE_URL}/AddDataToSpace",
         json=asdict(post_data),
         headers={
-                "Authorization": f"Bearer {token}"
+                "Authorization": f"{token}"
         }
     )
 

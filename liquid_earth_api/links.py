@@ -11,7 +11,7 @@ def get_deep_link(post_data: PostData, token: str):
         url=f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),
         headers={
-                "Authorization": f"Bearer {token}"
+                "Authorization": f"{token}"
         }
     )
 
