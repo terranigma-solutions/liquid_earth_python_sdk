@@ -3,10 +3,10 @@ from dataclasses import asdict
 import requests
 
 from liquid_earth_api._utils import BASE_URL
-from liquid_earth_api.data.schemas import PostData
+from liquid_earth_api.data.schemas import AddDataPostData
 
 
-def get_deep_link(post_data: PostData, token: str):
+def get_deep_link(post_data: AddDataPostData, token: str):
     response = requests.post(
         url=f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),

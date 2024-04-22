@@ -2,8 +2,13 @@
 
 
 @dataclass
-class PostData:
+class AddDataPostData:
     spaceId: str
     ownerId: str
     dataType: str
     fileName: str
+    
+    
+@dataclass
+class AddNewSpacePostData:
+    spaceName: str
