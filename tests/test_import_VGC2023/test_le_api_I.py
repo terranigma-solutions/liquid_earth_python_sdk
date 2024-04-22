@@ -21,7 +21,7 @@ def test_get_available_projects():
 
 def test_get_deeplink():
     clashach_project: PostData = _get_clashach_project()
-    
+
     deep_link = get_deep_link(
         post_data=clashach_project,
         token=user_token
@@ -31,11 +31,11 @@ def test_get_deeplink():
 
 def test_upload_data_to_space():
     # * Getting available projects
-
-    post_data = _get_clashach_project()
-
-    model = gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True)
-    foo = push_data_to_le_space(model, post_data=post_data, token=user_token)
+    foo = push_data_to_le_space(
+        geo_model=gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True),
+        post_data=_get_test_project(),
+        token=user_token
+    )
 
 
 def _get_clashach_project() -> PostData:
@@ -49,6 +49,23 @@ def _get_clashach_project() -> PostData:
     post_data = PostData(
         spaceId=clashach_project["spaceId"],
         ownerId=clashach_project["ownerId"],
+        dataType="static_mesh",
+        fileName="test"
+    )
+    return post_data
+
+
+def _get_test_project() -> PostData:
+    all_projects = test_get_available_projects()
+    # Look for the item that the ["name"] == "Clashach"
+    for project in all_projects:
+        if project["name"] == "Test upload":
+            found_project = project
+    if found_project is None:
+        raise ValueError("project not found")
+    post_data = PostData(
+        spaceId=found_project["spaceId"],
+        ownerId=found_project["ownerId"],
         dataType="static_mesh",
         fileName="test"
     )
