@@ -32,7 +32,7 @@ def test_get_deeplink():
 def test_upload_data_to_space():
     # * Getting available projects
     foo = push_data_to_le_space(
-        geo_model=gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True),
+        geo_model=gp.generate_example_model(ExampleModel.HORIZONTAL_STRAT, compute_model=True),
         post_data=_get_test_project(),
         token=user_token
     )
