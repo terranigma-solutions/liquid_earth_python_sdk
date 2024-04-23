@@ -41,8 +41,9 @@ def test_upload_data_to_space():
     import gempy as gp
     from gempy.core.data.enumerators import ExampleModel
 
+    gempy_model = gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True)
     foo = le_api.post_add_data_to_space(
-        geo_model=gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True),
+        unstructured_data=gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
         post_data=_get_test_project(space_name),
         token=user_token
     )
