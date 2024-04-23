@@ -6,6 +6,8 @@ from liquid_earth_api.api import le_api, utils_api
 config = dotenv_values()
 user_token = config.get('TOKEN')
 
+space_name = "Test upload from python2"
+
 
 def test_get_available_projects():
     available_projects = le_api.get_available_projects(
@@ -15,7 +17,7 @@ def test_get_available_projects():
 
 
 def test_get_deeplink():
-    _project: AddDataPostData = _get_test_project("Test upload from python")
+    _project: AddDataPostData = _get_test_project(space_name)
 
     deep_link = le_api.get_deep_link(
         post_data=_project,
@@ -25,7 +27,7 @@ def test_get_deeplink():
 
 
 def test_new_space():
-    data = AddNewSpacePostData(spaceName="Test upload from python")
+    data = AddNewSpacePostData(spaceName=space_name)
     bar = le_api.post_create_space(
         add_new_space=data,
         token=user_token
@@ -41,7 +43,7 @@ def test_upload_data_to_space():
 
     foo = le_api.post_add_data_to_space(
         geo_model=gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True),
-        post_data=_get_test_project("Test upload from python"),
+        post_data=_get_test_project(space_name),
         token=user_token
     )
     pass

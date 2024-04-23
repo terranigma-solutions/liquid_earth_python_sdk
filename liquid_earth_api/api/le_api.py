@@ -26,5 +26,4 @@ def post_add_data_to_space(geo_model: gempy.data.GeoModel, post_data: AddDataPos
         unstructured_data=geo_model.solutions.raw_arrays.meshes_to_subsurface(),
         sas_dict=response
     )
-    print(uploading_files_response.text)
     return uploading_files_response
