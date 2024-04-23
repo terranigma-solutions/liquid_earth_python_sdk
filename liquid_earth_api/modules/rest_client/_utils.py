@@ -10,7 +10,7 @@ BASE_URL = f"https://apim-liquidearth.azure-api.net/python" if not LOCAL else\
     f"http://{socket.gethostname()}.local:7071/api"
 
 
-def handle_response(response) -> dict:
+def handle_response(response) -> any:
     """ Helper function to handle common response logic. """
     if response.ok:
         content_type_ = response.headers['Content-Type']

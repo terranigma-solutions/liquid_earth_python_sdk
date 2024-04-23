@@ -9,6 +9,33 @@ user_token = config.get('TOKEN')
 space_name = "Test upload from python2"
 
 
+def test_upload_mesh_to_existing_space():
+    import gempy as gp
+    from gempy.core.data.enumerators import ExampleModel
+
+    gempy_model = gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True)
+    foo = le_api.upload_mesh_to_existing_space(
+        space_name=space_name,
+        data=gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
+        file_name="test2",
+        token=user_token
+    )
+    pass
+
+
+def test_upload_mesh_to_new_space():
+    import gempy as gp
+    from gempy.core.data.enumerators import ExampleModel
+
+    gempy_model = gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True)
+    foo = le_api.upload_mesh_to_new_space(
+        space_name="new_space_name",
+        data=gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
+        file_name="test2",
+        token=user_token
+    )
+    pass
+
 def test_get_available_projects():
     available_projects = le_api.get_available_projects(
         token=user_token

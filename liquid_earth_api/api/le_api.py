@@ -6,6 +6,10 @@ from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
 
 
+def set_token(token: str):
+    raise NotImplementedError
+
+
 def upload_mesh_to_existing_space(space_name: str, data: subsurface.UnstructuredData, file_name: str,
                                   token: str, grab_link: bool = True) -> Union[bool, dict]:
     # * grab space
@@ -21,10 +25,13 @@ def upload_mesh_to_existing_space(space_name: str, data: subsurface.Unstructured
 
 def upload_mesh_to_new_space(space_name: str, data: subsurface.UnstructuredData,
                              file_name: str, token: str, grab_link: bool = True) -> Union[bool, dict]:
-    found_project = post_create_space(
-        AddNewSpacePostData(spaceName=space_name), token)
+    post_data = AddNewSpacePostData(spaceName=space_name)
+    new_project = post_create_space(
+        add_new_space=post_data,
+        token=token
+    )
 
-    return _upload_mesh_common(data, file_name, found_project, grab_link, token)
+    return _upload_mesh_common(data, file_name, new_project, grab_link, token)
 
 
 def get_deep_link(post_data: AddDataPostData, token: str):
