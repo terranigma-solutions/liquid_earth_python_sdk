@@ -1,28 +1,24 @@
 ﻿from dotenv import dotenv_values
 
 from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData
-from gempy.core.data.enumerators import ExampleModel
-from liquid_earth_api.modules.rest_client._upload_files import push_data_to_le_space
-from liquid_earth_api.modules.rest_client._links import get_deep_link
-from liquid_earth_api.modules.rest_client.rest_interface import get_available_projects, post_create_space
-import gempy as gp
+from liquid_earth_api.api import le_api
 
 config = dotenv_values()
 user_token = config.get('TOKEN')
 
 
 def test_get_available_projects():
-    available_projects = get_available_projects(
+    available_projects = le_api.get_available_projects(
         token=user_token
     )
     return available_projects
 
 
 def test_get_deeplink():
-    clashach_project: AddDataPostData = _get_test_project("Test upload from python")
+    _project: AddDataPostData = _get_test_project("Test upload from python")
 
-    deep_link = get_deep_link(
-        post_data=clashach_project,
+    deep_link = le_api.get_deep_link(
+        post_data=_project,
         token=user_token
     )
     print(deep_link)
@@ -30,7 +26,7 @@ def test_get_deeplink():
 
 def test_new_space():
     data = AddNewSpacePostData(spaceName="Test upload from python")
-    bar = post_create_space(
+    bar = le_api.post_create_space(
         add_new_space=data,
         token=user_token
     )
@@ -40,12 +36,15 @@ def test_new_space():
 
 def test_upload_data_to_space():
     # * Getting available projects
-    foo = push_data_to_le_space(
+    import gempy as gp
+    from gempy.core.data.enumerators import ExampleModel
+    
+    foo = le_api.post_add_data_to_space(
+        geo_model=gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True),
         post_data=_get_test_project("Test upload from python"),
         token=user_token
     )
     pass
-
 
 
 def _get_test_project(space_name: str) -> AddDataPostData:
