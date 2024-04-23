@@ -5,7 +5,7 @@ from dataclasses import asdict
 
 
 def get_deep_link(post_data: AddDataPostData, token: str) -> dict:
-    response = requests.post(
+    response = requests.get(
         url=f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),
         headers={"Authorization": f"{token}"}

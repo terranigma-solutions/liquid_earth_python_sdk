@@ -13,6 +13,8 @@ BASE_URL = f"https://apim-liquidearth.azure-api.net/python" if not LOCAL else\
 def handle_response(response) -> dict:
     """ Helper function to handle common response logic. """
     if response.ok:
-        return response.json() if response.headers['Content-Type'] == 'application/json' else response.text
+        content_type_ = response.headers['Content-Type']
+        parsed_response = response.json() if 'application/json' in content_type_ else response.text
+        return parsed_response
     else:
         raise ValueError(f"HTTP Error {response.status_code}: {response.reason} {response.text}")

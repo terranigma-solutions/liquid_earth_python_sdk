@@ -8,9 +8,10 @@ from ..modules.blob_client import blob_interface
 
 def get_deep_link(post_data: AddDataPostData, token: str):
     response = rest_interface.get_deep_link(post_data, token)
-    print(response.text)
+    return response
 
 
+# TODO: ? Can we cache this easily?
 def get_available_projects(token: str):
     return rest_interface.get_available_projects(token)
 
