@@ -2,7 +2,7 @@ from dataclasses import asdict
 
 import requests
 
-from liquid_earth_api.modules.client._utils import BASE_URL
+from liquid_earth_api.modules.rest_client._utils import BASE_URL
 from liquid_earth_api.data.schemas import AddDataPostData
 
 

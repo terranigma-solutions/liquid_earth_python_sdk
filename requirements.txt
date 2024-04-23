@@ -1,6 +1,8 @@
-python-dotenv
+python-dotenv~=1.0.1
 pytest
 
 azure-storage-blob
 setuptools~=65.5.1
 requests~=2.31.0
+
+subsurface
