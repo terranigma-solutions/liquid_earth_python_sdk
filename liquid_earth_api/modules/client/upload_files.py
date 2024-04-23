@@ -6,7 +6,7 @@ from azure.storage.blob import BlobClient
 
 import gempy as gp
 import subsurface as ss
-from liquid_earth_api._utils import BASE_URL
+from liquid_earth_api.modules.client._utils import BASE_URL
 from liquid_earth_api.data.schemas import AddDataPostData
 
 

@@ -1,3 +1,3 @@
-from .available_projects import get_available_projects 
-from .links import get_deep_link
-from .upload_files import push_data_to_le_space
+from liquid_earth_api.modules.client.client_interface import get_available_projects 
+from liquid_earth_api.modules.client.links import get_deep_link
+from liquid_earth_api.modules.client.upload_files import push_data_to_le_space

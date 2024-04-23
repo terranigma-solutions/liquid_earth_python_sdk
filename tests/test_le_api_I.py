@@ -2,11 +2,10 @@
 
 from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData
 from gempy.core.data.enumerators import ExampleModel
-from liquid_earth_api.upload_files import push_data_to_le_space
-from liquid_earth_api.links import get_deep_link
-from liquid_earth_api.available_projects import get_available_projects, create_space
+from liquid_earth_api.modules.client.upload_files import push_data_to_le_space
+from liquid_earth_api.modules.client.links import get_deep_link
+from liquid_earth_api.modules.client.client_interface import get_available_projects, create_space
 import gempy as gp
-import dotenv
 
 config = dotenv_values()
 user_token = config.get('TOKEN')
@@ -20,7 +19,7 @@ def test_get_available_projects():
 
 
 def test_get_deeplink():
-    clashach_project: AddDataPostData = _get_clashach_project()
+    clashach_project: AddDataPostData = _get_test_project("Test upload from python")
 
     deep_link = get_deep_link(
         post_data=clashach_project,
@@ -46,23 +45,8 @@ def test_upload_data_to_space():
         post_data=_get_test_project("Test upload from python"),
         token=user_token
     )
+    pass
 
-
-def _get_clashach_project() -> AddDataPostData:
-    all_projects = test_get_available_projects()
-    # Look for the item that the ["name"] == "Clashach"
-    for project in all_projects:
-        if project["name"] == "Clashach":
-            clashach_project = project
-    if clashach_project is None:
-        raise ValueError("Clashach project not found")
-    post_data = AddDataPostData(
-        spaceId=clashach_project["spaceId"],
-        ownerId=clashach_project["ownerId"],
-        dataType="static_mesh",
-        fileName="test"
-    )
-    return post_data
 
 
 def _get_test_project(space_name: str) -> AddDataPostData:

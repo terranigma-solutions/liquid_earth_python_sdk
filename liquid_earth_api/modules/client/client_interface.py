@@ -2,7 +2,7 @@ from dataclasses import asdict
 
 import requests
 
-from liquid_earth_api._utils import BASE_URL
+from liquid_earth_api.modules.client._utils import BASE_URL
 from liquid_earth_api.data.schemas import AddNewSpacePostData
 
 
@@ -15,7 +15,7 @@ def get_available_projects(token: str):
     )
     if response.status_code != 200:
         # add the response to the error
-        raise ValueError(f"Error getting available projects. Response: {response.reason}")
+        raise ValueError(f"Error getting available projects. Response: {response.reason} {response.text}")
     else:
         return response.json()
 
