@@ -71,8 +71,8 @@ def post_add_data_to_space(unstructured_data: subsurface.UnstructuredData, post_
 def _upload_mesh_common(data, file_name, found_project, grab_link, token):
     # * upload data
     post_data = AddDataPostData(
-        spaceId=found_project["spaceId"],
-        ownerId=found_project["ownerId"],
+        spaceId=found_project["SpaceId"],
+        ownerId=found_project["OwnerId"],
         dataType="static_mesh",
         fileName=file_name
     )
