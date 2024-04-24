@@ -5,9 +5,20 @@ from ..data.schemas import AddDataPostData, AddNewSpacePostData
 from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
 
+import os
+
 
 def set_token(token: str):
-    raise NotImplementedError
+    # Check that the first 3 characters are le-
+    if token[:3] != 'le-':
+        raise ValueError('The token is invalid. Generate a new token from the LiquidEarth WebApp')
+    
+    if not os.path.exists('.env'):
+        with open('.env', 'w') as f:
+            f.write(f'TOKEN={token}\n')
+    else:
+        with open('.env', 'a') as f:
+            f.write(f'TOKEN={token}\n')
 
 
 def upload_mesh_to_existing_space(space_name: str, data: subsurface.UnstructuredData, file_name: str,
