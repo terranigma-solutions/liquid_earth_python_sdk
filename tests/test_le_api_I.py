@@ -36,6 +36,7 @@ def test_upload_mesh_to_new_space():
     )
     pass
 
+
 def test_get_available_projects():
     available_projects = le_api.get_available_projects(
         token=user_token
