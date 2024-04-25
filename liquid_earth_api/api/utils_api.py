@@ -4,5 +4,5 @@ def find_space_item(all_projects: list, space_name: str):
         if project["Name"] == space_name:
             found_project = project
     if found_project is None:
-        raise ValueError("project not found")
+        raise ValueError("Space not found in LiquidEarth user. Make sure the space exists or create a new one")
     return found_project

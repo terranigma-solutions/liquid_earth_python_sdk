@@ -15,10 +15,10 @@ def set_token(token: str):
     
     if not os.path.exists('.env'):
         with open('.env', 'w') as f:
-            f.write(f'TOKEN={token}\n')
+            f.write(f'LIQUID_EARTH_TOKEN={token}\n')
     else:
         with open('.env', 'a') as f:
-            f.write(f'TOKEN={token}\n')
+            f.write(f'LIQUID_EARTH_TOKEN={token}\n')
 
 
 def upload_mesh_to_existing_space(space_name: str, data: subsurface.UnstructuredData, file_name: str,
