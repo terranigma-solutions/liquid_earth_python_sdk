@@ -87,8 +87,8 @@ def _get_test_project(space_name: str) -> AddDataPostData:
     )
     found_project = utils_api.find_space_item(all_projects, space_name)
     post_data = AddDataPostData(
-        spaceId=found_project["spaceId"],
-        ownerId=found_project["ownerId"],
+        spaceId=found_project["SpaceId"],
+        ownerId=found_project["OwnerId"],
         dataType="static_mesh",
         fileName="test"
     )
