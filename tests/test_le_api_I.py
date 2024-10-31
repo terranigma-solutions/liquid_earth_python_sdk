@@ -1,10 +1,9 @@
 ﻿import os
 
-from dotenv import dotenv_values, load_dotenv
+from dotenv import  load_dotenv
 
 from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData
 from liquid_earth_api.api import le_api, utils_api
-
 load_dotenv()
 
 user_token = os.environ.get("LIQUID_EARTH_API_TOKEN")

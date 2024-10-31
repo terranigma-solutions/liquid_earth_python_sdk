@@ -37,3 +37,30 @@ def post_create_space(add_new_space: AddNewSpacePostData, token: str) -> dict:
         headers={"Authorization": f"{token}"}
     )
     return handle_response(response)
+
+def get_dev_tokens(user_id: str, login_token: str) -> dict:
+    response = requests.get(
+        url=f"{BASE_URL}/apikeys",
+        params={"user_id": user_id},
+        headers={"Authorization": f"{login_token}"}
+    )
+    return handle_response(response)
+
+
+def generate_dev_token(user_id: str, token_name: str, login_token: str) -> dict:
+    response = requests.post(
+        url=f"{BASE_URL}/apikeys/generate",
+        params={"user_id": user_id},
+        json={"name": token_name},
+        headers={"Authorization": f"{login_token}"}
+    )
+    return handle_response(response)
+
+def revoke_dev_token(user_id: str, token_id: str, login_token: str) -> dict:
+    response = requests.post(
+        url=f"{BASE_URL}/apikeys/revoke",
+        params={"user_id": user_id},
+        json={"keyId": token_id},
+        headers={"Authorization": f"{login_token}"}
+    )
+    return handle_response(response)
