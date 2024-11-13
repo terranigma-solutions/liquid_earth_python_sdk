@@ -25,7 +25,8 @@ def post_add_data_to_space(post_data: AddDataPostData, token: str) -> dict:
 def get_available_projects(token: str) -> list:
     response = requests.get(
         url=f"{BASE_URL}/GetAvailableProjects",
-        headers={"Authorization": f"{token}"}
+        headers={"Authorization": f"{token}"},
+        timeout=60
     )
     return handle_response(response)
 
