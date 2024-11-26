@@ -14,8 +14,7 @@ def push_unstructured_data(unstructured_data: subsurface.UnstructuredData, sas_d
         val = blob_client.upload_blob(
             stream,
             blob_type="BlockBlob",
-            overwrite=True,
-            timeout=30
+            overwrite=True
         )
         print(f"Uploaded file: {val}")
         return True
