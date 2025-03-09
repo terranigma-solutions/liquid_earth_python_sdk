@@ -3,6 +3,8 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
+import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.ui.*
 
 /*
@@ -56,6 +58,58 @@ changeBuildType(RelativeId("TestingDev001")) {
         }
         add {
             param("env.TERRA_PATH_DEVOPS", "Not set")
+        }
+    }
+
+    expectSteps {
+        script {
+            name = "Setup"
+            id = "Setup"
+            scriptContent = """
+                @echo on
+                python -m venv venv
+                call venv\Scripts\activate
+                venv\Scripts\python -m pip install --upgrade pip
+                
+                echo Checking directory...
+                dir
+                dir .requirements
+                
+                venv\Scripts\pip install --verbose -r requirements/requirements.txt
+                venv\Scripts\pip install --verbose teamcity-messages
+            """.trimIndent()
+        }
+        script {
+            name = "Run Test: Core"
+            id = "Run_Test"
+            scriptContent = """
+                @echo on
+                venv\Scripts\python -m pytest --teamcity -v
+            """.trimIndent()
+        }
+        script {
+            name = "Run Test: Mesh"
+            id = "Run_Test_2"
+            enabled = false
+            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
+            scriptContent = """
+                venv\Scripts\pip install --verbose -r requirements/requirements_mesh.txt
+                
+                @echo on
+                set REQUIREMENT_LEVEL=READ_MESH
+                echo REQUIREMENT_LEVEL is %REQUIREMENT_LEVEL%
+                venv\Scripts\python -m pytest --teamcity -v -m read_mesh
+            """.trimIndent()
+        }
+    }
+    steps {
+        update<ScriptBuildStep>(1) {
+            clearConditions()
+            scriptContent = """
+                @echo on
+                venv\Scripts\python -m pytest --teamcity -v -m core
+            """.trimIndent()
+            param("teamcity.kubernetes.executor.pull.policy", "")
         }
     }
 
