@@ -43,7 +43,6 @@ def test_generate_dev_token():
     print(val)
 
 
-@pytest.mark.explicit
 def test_revoke_dev_token():
     val = revoke_dev_token(
         user_id="7c775179-437b-4269-8cf7-8e6a419f1b00",
