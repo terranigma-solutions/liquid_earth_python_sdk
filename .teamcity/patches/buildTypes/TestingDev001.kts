@@ -28,5 +28,11 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             password("env.LIQUID_EARTH_API_TOKEN_REVEAL", "credentialsJSON:d14b7073-3cd7-4e10-a829-2a094b2576a8")
         }
+        expect {
+            param("env.LOGIN_PASSWORD", "credentialsJSON:LoginPassword")
+        }
+        update {
+            password("env.LOGIN_PASSWORD", "credentialsJSON:d61e0721-071f-4838-9940-145fe0709afd")
+        }
     }
 }
