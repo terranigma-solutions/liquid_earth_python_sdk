@@ -7,6 +7,8 @@ import requests
 
 dotenv.load_dotenv()
 
+pytest = pytest.mark.explicit
+
 
 def test_login_with_credentials():
     endpoint = os.getenv("LOGIN_URL")
@@ -32,8 +34,6 @@ def test_get_user_dev_tokens():
     print(val)
 
 
-
-@pytest.mark.explicit
 def test_generate_dev_token():
     val = generate_dev_token(
         token_name="test_token",
