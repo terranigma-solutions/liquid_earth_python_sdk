@@ -46,5 +46,11 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             param("env.LOGIN_USER", "miguel@terranigma-solutions.com")
         }
+        expect {
+            param("env.TEST_LOGIN_TOKEN", "credentialsJSON:TestLoginToken")
+        }
+        update {
+            param("env.TEST_LOGIN_TOKEN", "Not sure how to set this yet")
+        }
     }
 }
