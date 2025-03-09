@@ -7,6 +7,7 @@ from liquid_earth_api.api import le_api, utils_api
 load_dotenv()
 
 
+@pytest.mark.core
 class TestLEApiBase:
     """Base test class with common setup"""
 
