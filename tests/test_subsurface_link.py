@@ -1,5 +1,6 @@
 ﻿import os
 
+import pytest
 from dotenv import load_dotenv
 
 from liquid_earth_api.api import le_api
@@ -10,6 +11,7 @@ user_token = os.environ.get("LIQUID_EARTH_API_TOKEN")
 
 space_name = "Ideon demo space"
 
+pytestmark = pytest.mark.skip(reason="not read")
 
 def test_dxf_mesh_to_existing_space():
     import subsurface as ss

@@ -1,8 +1,9 @@
 python-dotenv~=1.0.1
 pytest
+python-dotenv
 
 azure-storage-blob
 setuptools~=65.5.1
 requests~=2.31.0
 
-subsurface
+git+https://github.com/terranigma-solutions/subsurface.git@2025.0.0b2
