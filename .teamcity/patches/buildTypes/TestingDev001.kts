@@ -20,7 +20,7 @@ changeBuildType(RelativeId("TestingDev001")) {
             param("env.LIQUID_EARTH_API_TOKEN_LEGACY", "credentialsJSON:ApiToken_Legacy")
         }
         update {
-            param("env.LIQUID_EARTH_API_TOKEN_LEGACY", "le-149959ca7bce49808c8cfef14303d2aaacXDx-w1vc1bDwLGU06Y5KW1kj0AwyTBiA5C3HD2fzQ")
+            password("env.LIQUID_EARTH_API_TOKEN_LEGACY", "credentialsJSON:e740f821-25ac-410c-9f81-2b8cb7c7911e")
         }
     }
 }
