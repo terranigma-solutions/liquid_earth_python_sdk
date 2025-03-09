@@ -52,5 +52,8 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             param("env.TEST_LOGIN_TOKEN", "Not sure how to set this yet")
         }
+        add {
+            param("env.TERRA_PATH_DEVOPS", "Not set")
+        }
     }
 }
