@@ -7,7 +7,7 @@ import requests
 
 dotenv.load_dotenv()
 
-pytest = pytest.mark.explicit
+pytestmark = pytest.mark.explicit
 
 
 def test_login_with_credentials():
