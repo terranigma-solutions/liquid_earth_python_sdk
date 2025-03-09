@@ -40,5 +40,11 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             param("env.LOGIN_SUBSCRIPTION_KEY", "0d7113b9f2054be8b4e1b350f18a7f72")
         }
+        expect {
+            param("env.LOGIN_USER", "credentialsJSON:LoginUser")
+        }
+        update {
+            param("env.LOGIN_USER", "miguel@terranigma-solutions.com")
+        }
     }
 }
