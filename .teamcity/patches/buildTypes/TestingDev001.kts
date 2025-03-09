@@ -1,6 +1,8 @@
 package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
+import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.ui.*
 
 /*
@@ -54,6 +56,32 @@ changeBuildType(RelativeId("TestingDev001")) {
         }
         add {
             param("env.TERRA_PATH_DEVOPS", "Not set")
+        }
+    }
+
+    features {
+        val feature1 = find<PullRequests> {
+            pullRequests {
+                vcsRootExtId = "${DslContext.settingsRoot.id}"
+                provider = github {
+                    authType = token {
+                        token = "credentialsJSON:4df4bdb0-1278-4834-a702-18ae3a286003"
+                    }
+                    filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+                }
+            }
+        }
+        feature1.apply {
+            provider = github {
+                serverUrl = ""
+                authType = token {
+                    token = "credentialsJSON:4df4bdb0-1278-4834-a702-18ae3a286003"
+                }
+                filterSourceBranch = ""
+                filterTargetBranch = ""
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+                ignoreDrafts = true
+            }
         }
     }
 }
