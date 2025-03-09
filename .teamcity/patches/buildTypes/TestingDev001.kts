@@ -34,5 +34,11 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             password("env.LOGIN_PASSWORD", "credentialsJSON:d61e0721-071f-4838-9940-145fe0709afd")
         }
+        expect {
+            param("env.LOGIN_SUBSCRIPTION_KEY", "credentialsJSON:SubscriptionKey")
+        }
+        update {
+            param("env.LOGIN_SUBSCRIPTION_KEY", "0d7113b9f2054be8b4e1b350f18a7f72")
+        }
     }
 }
