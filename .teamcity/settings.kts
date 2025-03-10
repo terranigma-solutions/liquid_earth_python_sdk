@@ -48,25 +48,25 @@ project {
 object TestingDev001 : BuildType({
     name = "Testing Dev 001"
 
-    params {
+  params {
         // Backend configuration
         param("env.BACKEND_OVERRIDE_DEV", "https://liquidearthapim-dev001.azure-api.net/python/")
         param("env.BACKEND_OVERRIDE_LOCAL", "http://localhost:7151/api")
         param("env.BACKEND_OVERRIDE", "%env.BACKEND_OVERRIDE_DEV%")
         
-        // API Tokens (using placeholder values for security)
-        param("env.LIQUID_EARTH_API_TOKEN_REVEAL", "credentialsJSON:ApiToken_Reveal")
-        param("env.LIQUID_EARTH_API_TOKEN_LEGACY", "credentialsJSON:ApiToken_Legacy")
-        param("env.LIQUID_EARTH_API_TOKEN_DEV001", "credentialsJSON:ApiToken_Dev001")
+        // API Tokens
+        password("env.LIQUID_EARTH_API_TOKEN_DEV001", "credentialsJSON:e740f821-25ac-410c-9f81-2b8cb7c7911e")
+        password("env.LIQUID_EARTH_API_TOKEN_LEGACY", "credentialsJSON:e740f821-25ac-410c-9f81-2b8cb7c7911e")
+        password("env.LIQUID_EARTH_API_TOKEN_REVEAL", "credentialsJSON:d14b7073-3cd7-4e10-a829-2a094b2576a8")
         param("env.LIQUID_EARTH_API_TOKEN", "%env.LIQUID_EARTH_API_TOKEN_DEV001%")
         
         // Login configuration
+        password("env.LOGIN_PASSWORD", "credentialsJSON:d61e0721-071f-4838-9940-145fe0709afd")
         param("env.LOGIN_URL", "https://liquidearthapim-dev001.azure-api.net/user/login_b2c_license")
-        param("env.LOGIN_USER", "credentialsJSON:LoginUser")
-        param("env.LOGIN_PASSWORD", "credentialsJSON:LoginPassword")
+        param("env.LOGIN_USER", "miguel@terranigma-solutions.com")
         param("env.LOGIN_CLIENT_ID", "685e08c0-0aac-42f6-80a9-c57440cd2962")
         param("env.LOGIN_SCOPE", "%env.LOGIN_CLIENT_ID%")
-        param("env.LOGIN_SUBSCRIPTION_KEY", "credentialsJSON:SubscriptionKey")
+        param("env.LOGIN_SUBSCRIPTION_KEY", "0d7113b9f2054be8b4e1b350f18a7f72")
         
         // Path configurations
         param("env.DXF_DATA_PATH", "%env.TERRA_PATH_DEVOPS%/meshes/upc_surface.dxf")
@@ -76,9 +76,11 @@ object TestingDev001 : BuildType({
         
         // Test user configuration
         param("env.TEST_USER_ID", "43773b72-feae-495d-a1d9-e529dc64da9f")
-        param("env.TEST_LOGIN_TOKEN", "credentialsJSON:TestLoginToken")
-    }
-
+        param("env.TEST_LOGIN_TOKEN", "Not sure how to set this yet")
+        
+        // Additional parameters
+        param("env.TERRA_PATH_DEVOPS", "Not set")
+    }    
     vcs {
         root(DslContext.settingsRoot)
     }
