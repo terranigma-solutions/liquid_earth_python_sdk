@@ -12,3 +12,8 @@ class AddDataPostData:
 @dataclass
 class AddNewSpacePostData:
     spaceName: str
+    
+    
+@dataclass
+class DeleteSpacePostData:
+    spaceId: str

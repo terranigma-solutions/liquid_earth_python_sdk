@@ -1,7 +1,7 @@
 import os
 import pytest
 from dotenv import load_dotenv
-from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData
+from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from liquid_earth_api.api import le_api, utils_api
 
 load_dotenv()
@@ -30,8 +30,7 @@ class TestLEApiBase:
         return post_data
 
 
-class TestLEApiNoGempy(TestLEApiBase):
-    """Tests that don't require GemPy"""
+class TestLEApiCore(TestLEApiBase):
 
     def test_get_available_projects(self):
         available_projects = le_api.get_available_projects(
@@ -40,58 +39,25 @@ class TestLEApiNoGempy(TestLEApiBase):
         assert len(available_projects) > 0
 
 
-    @pytest.mark.skip("not ready")
-    def test_new_space(self):
-        data = AddNewSpacePostData(spaceName=self.space_name)
+    def test_new_space_get_link_delete_space(self):
         response = le_api.post_create_space(
-            add_new_space=data,
+            add_new_space=(AddNewSpacePostData(spaceName=self.space_name)),
             token=self.user_token
         )
         assert response is not None
 
-    @pytest.mark.skip("not ready")
-    def test_get_deeplink(self):
         _project: AddDataPostData = self._get_test_project(self.space_name)
         deep_link = le_api.get_deep_link(
             post_data=_project,
             token=self.user_token
         )
         assert deep_link is not None
+
+        response = le_api.delete_space(
+            delete_space_post_data=DeleteSpacePostData(spaceId=_project.spaceId),
+            token=self.user_token
+        )
+        
+        assert response is not None
         
 
-@pytest.mark.skip("Requires GemPy")
-class TestLEApiWithGempy(TestLEApiBase):
-    """Tests that require GemPy"""
-
-    @classmethod
-    def setup_class(cls):
-        super().setup_class()
-        import gempy as gp
-        from gempy.core.data.enumerators import ExampleModel
-        cls.gempy_model = gp.generate_example_model(ExampleModel.ANTICLINE, compute_model=True)
-
-    def test_upload_mesh_to_existing_space(self):
-        response = le_api.upload_mesh_to_existing_space(
-            space_name=self.space_name,
-            data=self.gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
-            file_name="test2",
-            token=self.user_token
-        )
-        assert response is not None
-
-    def test_upload_mesh_to_new_space(self):
-        response = le_api.upload_mesh_to_new_space(
-            space_name="new_space_name",
-            data=self.gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
-            file_name="test2",
-            token=self.user_token
-        )
-        assert response is not None
-
-    def test_upload_data_to_space(self):
-        response = le_api.post_add_data_to_space(
-            unstructured_data=self.gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
-            post_data=self._get_test_project(self.space_name),
-            token=self.user_token
-        )
-        assert response is not None

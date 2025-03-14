@@ -1,7 +1,7 @@
 from typing import Union, Optional
 import subsurface
 from . import utils_api
-from ..data.schemas import AddDataPostData, AddNewSpacePostData
+from ..data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
 
@@ -12,7 +12,7 @@ def set_token(token: str):
     # Check that the first 3 characters are le-
     if token[:3] != 'le-':
         raise ValueError('The token is invalid. Generate a new token from the LiquidEarth WebApp')
-    
+
     if not os.path.exists('.env'):
         with open('.env', 'w') as f:
             f.write(f'LIQUID_EARTH_TOKEN={token}\n')
@@ -57,6 +57,10 @@ def get_available_projects(token: str):
 
 def post_create_space(add_new_space: AddNewSpacePostData, token: str) -> dict:
     return rest_interface.post_create_space(add_new_space, token)
+
+
+def delete_space(delete_space_post_data: DeleteSpacePostData, token: str) -> dict:
+    return rest_interface.delete_space(delete_space_post_data, token)
 
 
 def post_add_data_to_space(unstructured_data: subsurface.UnstructuredData, post_data: AddDataPostData, token: str):
