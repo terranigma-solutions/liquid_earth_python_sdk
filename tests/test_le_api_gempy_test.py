@@ -1,7 +1,7 @@
 ﻿import pytest
 
 from liquid_earth_api.api import le_api
-from test_le_api_test_cases import TestLEApiBase
+from .test_le_api_test_cases import TestLEApiBase
 
 
 @pytest.mark.skip("Requires GemPy")
