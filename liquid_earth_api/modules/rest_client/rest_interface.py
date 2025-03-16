@@ -1,7 +1,8 @@
-from liquid_earth_api.modules.rest_client._utils import BASE_URL, handle_response
+from liquid_earth_api.modules.rest_client._utils import handle_response
 from liquid_earth_api.data.schemas import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
 import requests
 from dataclasses import asdict
+from liquid_earth_api.config import BASE_URL
 
 
 def get_deep_link(post_data: AddDataPostData, token: str) -> dict:
