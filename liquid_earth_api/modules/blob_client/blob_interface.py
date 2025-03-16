@@ -21,5 +21,3 @@ def push_unstructured_data(unstructured_data: subsurface.UnstructuredData, sas_d
     except Exception as e:
         print(f"Error uploading files: {e}")
         raise ValueError(f"Error uploading files: {e}")
-
-
