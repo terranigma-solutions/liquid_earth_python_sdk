@@ -11,7 +11,6 @@ user_token = os.environ.get("LIQUID_EARTH_API_TOKEN")
 
 space_name = "Ideon demo space"
 
-pytestmark = pytest.mark.skip(reason="not read")
 
 def test_dxf_mesh_to_existing_space():
     import subsurface as ss
@@ -33,15 +32,14 @@ def test_dxf_mesh_to_existing_space():
     if False:
         ss.visualization.pv_plot([s], image_2d=False)
 
-    link = le_api.upload_mesh_to_existing_space(
-        # space_name="Demo (exported from geoh5)",
-        space_name="Shared Example: MX",
-        data=unstruct,
-        file_name="dxf",
-        token=user_token,
-        grab_link=False
-    )
-    pass
+    if True: 
+        link = le_api.upload_mesh_to_existing_space(
+            space_name="[TEMP] DXF From SDK",
+            data=unstruct,
+            file_name="dxf",
+            token=user_token,
+            grab_link=False
+        )
 
 
 def test_mx_mesh_to_existing_space():
@@ -53,13 +51,9 @@ def test_mx_mesh_to_existing_space():
     s = ss.visualization.to_pyvista_mesh(ts)
     ss.visualization.pv_plot([s], image_2d=True)
 
-    new_file = open(f"mx.le", "wb")
-    new_file.write(unstruct.to_binary())
-
     link = le_api.upload_mesh_to_existing_space(
-        space_name="Shared Example: MX",
+        space_name="[TEMP] MX From SDK",
         data=unstruct,
-        file_name="mx_file.le",
+        file_name="mx_file",
         token=user_token
     )
-    pass

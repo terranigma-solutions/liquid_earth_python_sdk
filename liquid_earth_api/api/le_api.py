@@ -23,6 +23,10 @@ def set_token(token: str):
 
 def upload_mesh_to_existing_space(space_name: str, data: subsurface.UnstructuredData, file_name: str,
                                   token: str, grab_link: bool = True) -> Union[bool, dict]:
+    # * Make sure file name does not contain .le
+    if file_name.endswith('.le'):
+        file_name = file_name[:-3]
+    
     # * grab space
     available_projects = get_available_projects(token)
     # ? which type is actually returned here?a
@@ -73,6 +77,7 @@ def post_add_data_to_space(unstructured_data: subsurface.UnstructuredData, post_
 
 
 def _upload_mesh_common(data, file_name, found_project, grab_link, token):
+    
     # * upload data
     post_data = AddDataPostData(
         spaceId=found_project["SpaceId"],
