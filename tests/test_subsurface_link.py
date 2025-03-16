@@ -26,9 +26,9 @@ def test_dxf_mesh_to_existing_space():
         xarray_attributes={"cell_attr_map": cell_attr_map},
     )
 
-    ts = ss.TriSurf(mesh=unstruct)
-    s = ss.visualization.to_pyvista_mesh(ts)
     if False:
+        ts = ss.TriSurf(mesh=unstruct)
+        s = ss.visualization.to_pyvista_mesh(ts)
         ss.visualization.pv_plot([s], image_2d=False)
 
     if True: 
@@ -46,9 +46,10 @@ def test_mx_mesh_to_existing_space():
     from subsurface.modules.reader.mesh.mx_reader import mx_to_unstruct_from_file
     unstruct: ss.UnstructuredData = mx_to_unstruct_from_file(os.getenv("PATH_TO_MX"))
 
-    ts = ss.TriSurf(mesh=unstruct)
-    s = ss.visualization.to_pyvista_mesh(ts)
-    ss.visualization.pv_plot([s], image_2d=True)
+    if False:
+        ts = ss.TriSurf(mesh=unstruct)
+        s = ss.visualization.to_pyvista_mesh(ts)
+        ss.visualization.pv_plot([s], image_2d=True)
 
     link = le_api.upload_mesh_to_existing_space(
         space_name="[TEMP] MX From SDK",
