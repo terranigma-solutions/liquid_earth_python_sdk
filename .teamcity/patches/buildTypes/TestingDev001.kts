@@ -15,6 +15,15 @@ To apply the patch, change the buildType with id = 'TestingDev001'
 accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("TestingDev001")) {
+    params {
+        expect {
+            param("env.PATH_TO_MX", "%env.TERRA_PATH_DEVOPS%/volume/GOCAD/mix/horizons_faults.mx")
+        }
+        update {
+            param("env.PATH_TO_MX", "%env.TERRA_PATH_DEVOPS%/meshes/GOCAD/mix/horizons_faults_small.mx")
+        }
+    }
+
     triggers {
         val trigger1 = find<VcsTrigger> {
             vcs {
