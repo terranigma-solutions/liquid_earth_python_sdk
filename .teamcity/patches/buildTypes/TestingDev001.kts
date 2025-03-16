@@ -2,7 +2,9 @@ package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.CommitStatusPublisher
+import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
+import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.triggers.VcsTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.ui.*
@@ -45,6 +47,20 @@ changeBuildType(RelativeId("TestingDev001")) {
             }
         }
         feature1.apply {
+            vcsRootExtId = ""
+        }
+        val feature2 = find<PullRequests> {
+            pullRequests {
+                vcsRootExtId = "${DslContext.settingsRoot.id}"
+                provider = github {
+                    authType = token {
+                        token = "credentialsJSON:4df4bdb0-1278-4834-a702-18ae3a286003"
+                    }
+                    filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+                }
+            }
+        }
+        feature2.apply {
             vcsRootExtId = ""
         }
     }
