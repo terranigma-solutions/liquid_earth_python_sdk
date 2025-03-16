@@ -22,6 +22,12 @@ changeBuildType(RelativeId("TestingDev001")) {
         update {
             param("env.PATH_TO_MX", "%env.TERRA_PATH_DEVOPS%/meshes/GOCAD/mix/horizons_faults_small.mx")
         }
+        expect {
+            param("env.TERRA_PATH_DEVOPS", "Not set")
+        }
+        update {
+            param("env.TERRA_PATH_DEVOPS", "D:/OneDrive - Terranigma Solutions GmbH/Documents - Terranigma Base/DevOps/SubsurfaceTestData/")
+        }
     }
 
     triggers {
