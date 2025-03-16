@@ -27,7 +27,7 @@ changeBuildType(RelativeId("TestingDev001")) {
         }
         trigger1.apply {
             branchFilter = """
-                +pr: draft=false
+                +pr:draft=false
                 +:<default>
             """.trimIndent()
 
