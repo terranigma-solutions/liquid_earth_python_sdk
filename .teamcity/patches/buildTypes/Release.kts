@@ -16,6 +16,10 @@ create(DslContext.projectId, BuildType({
     id("Release")
     name = "Release"
 
+    params {
+        param("env.PACKAGE_VERSION", "")
+    }
+
     vcs {
         root(RelativeId("HttpsGithubComTerranigmaSolutionsLiquidEarthPythonSdkRefsHeadsMain1"))
     }
