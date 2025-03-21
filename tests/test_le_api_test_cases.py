@@ -3,6 +3,7 @@ import pytest
 from dotenv import load_dotenv
 from liquid_earth_api.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from liquid_earth_api.api import le_api, utils_api
+from liquid_earth_api.modules.rest_client import rest_interface
 
 load_dotenv()
 
@@ -38,13 +39,12 @@ class TestLEApiCore(TestLEApiBase):
         )
         assert len(available_projects) > 0
 
-
     def test_new_space_get_link_delete_space(self):
-        response = le_api.post_create_space(
-            add_new_space=(AddNewSpacePostData(spaceName=self.space_name)),
-            token=self.user_token
-        )
+        space = (AddNewSpacePostData(spaceName=self.space_name))
+        response = rest_interface.post_create_space(space, self.user_token)
         assert response is not None
+
+        # ! Here we are not uploading the binary that would be the normal process
 
         _project: AddDataPostData = self._get_test_project(self.space_name)
         deep_link = le_api.get_deep_link(
@@ -57,7 +57,5 @@ class TestLEApiCore(TestLEApiBase):
             delete_space_post_data=DeleteSpacePostData(spaceId=_project.spaceId),
             token=self.user_token
         )
-        
-        assert response is not None
-        
 
+        assert response is not None
