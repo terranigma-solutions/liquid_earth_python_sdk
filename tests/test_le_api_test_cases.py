@@ -47,15 +47,24 @@ class TestLEApiCore(TestLEApiBase):
 
         # ! Here we are not uploading the binary that would be the normal process
 
-        _project: AddDataPostData = self._get_test_project(self.space_name)
+        all_projects = le_api.get_available_projects(
+            token=self.user_token
+        )
+        found_project: AvailableProject = _utils_api.find_space_item(all_projects, self.space_name)
+        post_data = AddDataPostData(
+            spaceId=found_project.SpaceId,
+            ownerId=found_project.OwnerId,
+            dataType="static_mesh",
+            fileName="test"
+        )
         deep_link = le_api.get_deep_link(
-            post_data=_project,
+            post_data=post_data,
             token=self.user_token
         )
         assert deep_link is not None
 
         response = le_api.delete_space(
-            delete_space_post_data=DeleteSpacePostData(spaceId=_project.spaceId),
+            delete_space_post_data=DeleteSpacePostData(spaceId=post_data.spaceId),
             token=self.user_token
         )
 
