@@ -1,4 +1,5 @@
-﻿from subsurface import optional_requirements
+﻿import pytest
+from subsurface import optional_requirements
 
 from liquid_earth_api.api import le_api
 from liquid_earth_api.core.data.schemas import DeleteSpacePostData
@@ -26,7 +27,8 @@ class TestLEApiWithGempy(TestLEApiBase):
                 delete_space_post_data=DeleteSpacePostData(spaceId=cls._space_id),
                 token=cls.user_token
             )
-    
+
+    @pytest.mark.skip(reason="Run this explicitly")
     def test_upload_mesh_to_existing_space(self):
         ss = optional_requirements.require_subsurface()
         subsurface: ss.UnstructuredData = self.gempy_model.solutions.raw_arrays.meshes_to_subsurface()
@@ -49,3 +51,5 @@ class TestLEApiWithGempy(TestLEApiBase):
             token=self.user_token
         )
         assert server_response is not None
+        
+        TestLEApiWithGempy._space_id = server_response.selected_project.SpaceId
