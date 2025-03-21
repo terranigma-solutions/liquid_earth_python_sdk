@@ -1,23 +1,19 @@
+import logging
+from http.client import HTTPResponse
 from io import BytesIO
-from typing import Any, Dict
-
-from azure.storage.blob import BlobClient
+from typing import Dict
 
 import subsurface
-
-from io import BytesIO
-from typing import Dict, Any
 from azure.storage.blob import BlobClient
-import logging
 
 
-def push_unstructured_data(unstructured_data: 'subsurface.UnstructuredData', sas_dict: Dict[str, str]) -> bool:
+def push_unstructured_data(unstructured_data: 'subsurface.UnstructuredData', sas: str) -> bool:
     """
     Upload unstructured data to Azure Blob Storage.
     
     Args:
         unstructured_data: The unstructured data to be uploaded
-        sas_dict: Dictionary containing SAS tokens for blob storage access
+        sas: The Shared Access Signature (SAS) URL for the blob storage
         
     Returns:
         bool: True if upload was successful
@@ -27,19 +23,17 @@ def push_unstructured_data(unstructured_data: 'subsurface.UnstructuredData', sas
     """
     logger = logging.getLogger(__name__)
 
-    if not sas_dict.get("sasForTestLe"):
-        raise ValueError("Missing required SAS token in sas_dict")
 
     try:
         # Convert data to binary
         binary_data = unstructured_data.to_binary()
 
         # Initialize blob client and create data stream
-        blob_client = BlobClient.from_blob_url(sas_dict["sasForTestLe"])
+        blob_client = BlobClient.from_blob_url(sas)
         data_stream = BytesIO(binary_data)
 
         # Upload data to blob storage
-        upload_result = blob_client.upload_blob(
+        upload_result:dict = blob_client.upload_blob(
             data_stream,
             blob_type="BlockBlob",
             overwrite=True

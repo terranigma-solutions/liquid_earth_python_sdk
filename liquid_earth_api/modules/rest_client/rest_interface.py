@@ -6,7 +6,7 @@ from dataclasses import asdict
 from liquid_earth_api.config import BASE_URL
 
 
-def get_deep_link(post_data: AddDataPostData, token: str) -> dict:
+def get_deep_link(post_data: AddDataPostData, token: str) -> any:
     response = requests.post(
         url=f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),

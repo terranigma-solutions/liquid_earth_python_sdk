@@ -14,5 +14,7 @@ class AvailableProject(BaseModel):
 @dataclasses.dataclass
 class ServerResponse:
     deep_link: str = None
-    url: str = None
+    available_projects: Optional[list[AvailableProject]] = None
+    selected_project: Optional[AvailableProject] = None
+    
     

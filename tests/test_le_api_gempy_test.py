@@ -1,7 +1,8 @@
 ﻿from subsurface import optional_requirements
 
 from liquid_earth_api.api import le_api
-from liquid_earth_api.core.data import DeleteSpacePostData
+from liquid_earth_api.core.data.schemas import DeleteSpacePostData
+from liquid_earth_api.core.output import ServerResponse
 from .test_le_api_test_cases import TestLEApiBase
 
 
@@ -32,19 +33,19 @@ class TestLEApiWithGempy(TestLEApiBase):
         name = self.space_name
         token = self.user_token
         
-        response = le_api.upload_mesh_to_existing_space(
+        server_response: ServerResponse = le_api.upload_mesh_to_existing_space(
             space_name="[TEMP] Test python api",
             data=subsurface,
             file_name="anticline",
             token=token
         )
-        assert response is not None
+        assert server_response is not None
 
     def test_upload_mesh_to_new_space(self):
-        response = le_api.upload_mesh_to_new_space(
+        server_response = le_api.upload_mesh_to_new_space(
             space_name="[TEMP] Test python api",
             data=self.gempy_model.solutions.raw_arrays.meshes_to_subsurface(),
             file_name="anticline",
             token=self.user_token
         )
-        assert response is not None
+        assert server_response is not None
