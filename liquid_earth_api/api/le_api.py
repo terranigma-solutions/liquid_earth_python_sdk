@@ -1,6 +1,6 @@
 from typing import Union
 import subsurface
-from . import utils_api
+from . import _utils_api
 from liquid_earth_api.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
@@ -30,7 +30,7 @@ def upload_mesh_to_existing_space(space_name: str, data: subsurface.Unstructured
     # * grab space
     available_projects = get_available_projects(token)
     # ? which type is actually returned here?a
-    found_project = utils_api.find_space_item(
+    found_project = _utils_api.find_space_item(
         all_projects=available_projects,
         space_name=space_name
     )

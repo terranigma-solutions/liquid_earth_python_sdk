@@ -1,8 +1,9 @@
 import os
 import pytest
 from dotenv import load_dotenv
-from liquid_earth_api.core.data import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
-from liquid_earth_api.api import le_api, utils_api
+from liquid_earth_api.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
+from liquid_earth_api.api import le_api, _utils_api
+from liquid_earth_api.core.output import AvailableProject
 from liquid_earth_api.modules.rest_client import rest_interface
 
 load_dotenv()
@@ -21,7 +22,7 @@ class TestLEApiBase:
         all_projects = le_api.get_available_projects(
             token=self.user_token
         )
-        found_project = utils_api.find_space_item(all_projects, space_name)
+        found_project = _utils_api.find_space_item(all_projects, space_name)
         post_data = AddDataPostData(
             spaceId=found_project["SpaceId"],
             ownerId=found_project["OwnerId"],
@@ -34,7 +35,7 @@ class TestLEApiBase:
 class TestLEApiCore(TestLEApiBase):
 
     def test_get_available_projects(self):
-        available_projects = le_api.get_available_projects(
+        available_projects: list[AvailableProject] = le_api.get_available_projects(
             token=self.user_token
         )
         assert len(available_projects) > 0
