@@ -51,6 +51,11 @@ create(DslContext.projectId, BuildType({
                 python -m twine upload dist/* -u __token__ -p %env.TWINE_PASSWORD%
             """.trimIndent()
         }
+        script {
+            name = "Push To GitHub"
+            id = "Push_To_GitHub"
+            scriptContent = """gh release create v1.2.3 dist/* --title "v1.2.3" --notes "Release notes here""""
+        }
     }
 
     triggers {
