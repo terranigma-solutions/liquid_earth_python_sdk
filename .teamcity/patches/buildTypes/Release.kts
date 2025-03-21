@@ -54,7 +54,7 @@ create(DslContext.projectId, BuildType({
         script {
             name = "Push To GitHub"
             id = "Push_To_GitHub"
-            scriptContent = """gh release create v1.2.3 dist/* --title "v1.2.3" --notes "Release notes here""""
+            scriptContent = """gh release create %env.PACKAGE_VERSION% dist/* --title "%env.PACKAGE_VERSION%" --notes "Release notes here""""
         }
     }
 
