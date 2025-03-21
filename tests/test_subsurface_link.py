@@ -11,6 +11,7 @@ user_token = os.environ.get("LIQUID_EARTH_API_TOKEN")
 
 pytestmark = pytest.mark.core
 
+
 def test_dxf_mesh_to_existing_space():
     import subsurface as ss
     from subsurface.modules.reader import dxf_file_to_unstruct_input
@@ -31,7 +32,7 @@ def test_dxf_mesh_to_existing_space():
         s = ss.visualization.to_pyvista_mesh(ts)
         ss.visualization.pv_plot([s], image_2d=False)
 
-    if True: 
+    if True:
         link = le_api.upload_mesh_to_existing_space(
             space_name="[TEMP] DXF From SDK",
             data=unstruct,
