@@ -46,6 +46,7 @@ create(DslContext.projectId, BuildType({
         script {
             name = "Push to PyPi"
             id = "Push_to_PyPi"
+            enabled = false
             scriptContent = """
                 python -m pip install --upgrade twine
                 python -m twine upload dist/* -u __token__ -p %env.TWINE_PASSWORD%
