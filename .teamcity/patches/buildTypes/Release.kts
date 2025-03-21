@@ -3,6 +3,7 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.ui.*
 
@@ -17,6 +18,19 @@ create(DslContext.projectId, BuildType({
 
     vcs {
         root(RelativeId("HttpsGithubComTerranigmaSolutionsLiquidEarthPythonSdkRefsHeadsMain1"))
+    }
+
+    steps {
+        script {
+            name = "Git Tagging"
+            id = "Git_Tagging"
+            scriptContent = """
+                git config user.name "TeamCity Bot"
+                git config user.email "ci@terraniga-solutions.com"
+                git tag %env.PACKAGE_VERSION%
+                git push origin %env.PACKAGE_VERSION%
+            """.trimIndent()
+        }
     }
 
     triggers {
