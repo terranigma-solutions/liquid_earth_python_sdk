@@ -35,6 +35,14 @@ create(DslContext.projectId, BuildType({
                 git push origin %env.PACKAGE_VERSION%
             """.trimIndent()
         }
+        script {
+            name = "Build"
+            id = "Build"
+            scriptContent = """
+                python -m pip install --upgrade build
+                python -m build
+            """.trimIndent()
+        }
     }
 
     triggers {
