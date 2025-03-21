@@ -33,8 +33,6 @@ def get_available_projects(token: str) -> list:
 
 
 def post_create_space(add_new_space: AddNewSpacePostData, token: str) -> dict:
-    
-
     response = requests.post(
         url=f"{BASE_URL}/AddNewSpace/v2",
         json=asdict(add_new_space),
