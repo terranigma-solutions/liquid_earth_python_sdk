@@ -1,11 +1,12 @@
+from liquid_earth_api.core.output import AvailableProject
 from liquid_earth_api.modules.rest_client._utils import handle_response
-from liquid_earth_api.data.schemas import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
+from liquid_earth_api.core.data.schemas import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
 import requests
 from dataclasses import asdict
 from liquid_earth_api.config import BASE_URL
 
 
-def get_deep_link(post_data: AddDataPostData, token: str) -> dict:
+def get_deep_link(post_data: AddDataPostData, token: str) -> any:
     response = requests.post(
         url=f"{BASE_URL}/GetDeepLinkFromSpace",
         json=asdict(post_data),
@@ -29,12 +30,13 @@ def get_available_projects(token: str) -> list:
         headers={"Authorization": f"{token}"},
         timeout=60
     )
-    return handle_response(response)
+    data: list = handle_response(response)
+    foo: list[AvailableProject] = [AvailableProject(**item) for item in data]
+    
+    return foo
 
 
 def post_create_space(add_new_space: AddNewSpacePostData, token: str) -> dict:
-    
-
     response = requests.post(
         url=f"{BASE_URL}/AddNewSpace/v2",
         json=asdict(add_new_space),

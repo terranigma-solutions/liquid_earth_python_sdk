@@ -1,6 +1,7 @@
 python-dotenv~=1.0.1
 pytest
 python-dotenv
+pydantic
 
 azure-storage-blob
 setuptools~=65.5.1
