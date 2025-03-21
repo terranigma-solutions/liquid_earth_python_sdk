@@ -1,13 +1,13 @@
 ﻿from subsurface import optional_requirements
 
 from liquid_earth_api.api import le_api
-from liquid_earth_api.data.schemas import DeleteSpacePostData
+from liquid_earth_api.core.data import DeleteSpacePostData
 from .test_le_api_test_cases import TestLEApiBase
 
 
 class TestLEApiWithGempy(TestLEApiBase):
     """Tests that require GemPy"""
-    _space_id: str
+    _space_id: str = None
     
     @classmethod
     def setup_class(cls):
@@ -20,11 +20,11 @@ class TestLEApiWithGempy(TestLEApiBase):
     @classmethod
     def teardown_class(cls):
         """Deletes the created space after the tests"""
-        super().teardown_class()
-        le_api.delete_space(
-            delete_space_post_data=DeleteSpacePostData(spaceId=_project.spaceId),
-            token=cls.user_token
-        )
+        if cls._space_id is not None:
+            le_api.delete_space(
+                delete_space_post_data=DeleteSpacePostData(spaceId=cls._space_id),
+                token=cls.user_token
+            )
     
     def test_upload_mesh_to_existing_space(self):
         ss = optional_requirements.require_subsurface()

@@ -1,7 +1,7 @@
 from typing import Union
 import subsurface
 from . import utils_api
-from ..data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
+from liquid_earth_api.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
 

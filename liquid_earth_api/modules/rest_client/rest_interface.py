@@ -1,5 +1,5 @@
 from liquid_earth_api.modules.rest_client._utils import handle_response
-from liquid_earth_api.data.schemas import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
+from liquid_earth_api.core.data import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
 import requests
 from dataclasses import asdict
 from liquid_earth_api.config import BASE_URL
