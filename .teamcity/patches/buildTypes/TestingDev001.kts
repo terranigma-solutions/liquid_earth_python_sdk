@@ -104,6 +104,7 @@ changeBuildType(RelativeId("TestingDev001")) {
             }
         }
         trigger1.apply {
+            triggerRules = "-:.teamcity/**"
             branchFilter = """
                 +pr:draft=false
                 +:<default>
