@@ -38,6 +38,7 @@ create(DslContext.projectId, BuildType({
         script {
             name = "Build"
             id = "Build"
+            enabled = false
             scriptContent = """
                 python -m pip install --upgrade build
                 python -m build
