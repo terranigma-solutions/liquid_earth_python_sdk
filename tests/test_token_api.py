@@ -9,6 +9,7 @@ dotenv.load_dotenv()
 
 pytestmark = pytest.mark.skip(reason="Requires Liquid Earth API credentials")
 
+
 def test_login_with_credentials():
     endpoint = os.getenv("LOGIN_URL")
     subscription_key = os.getenv("LOGIN_SUBSCRIPTION_KEY")  # Add this line
