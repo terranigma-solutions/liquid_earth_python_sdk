@@ -27,13 +27,13 @@ def read_requirements(file_name, base_path=""):
 
 
 setup(
-    name='liquid_earth_api',
+    name='liquid_earth_sdk',
     packages=find_packages(exclude=('test', 'docs', 'examples')),
     url='',
     license='EUPL-v1.2',
     author='Miguel de la Varga',
     author_email='miguel@terranigma-solutions.com',
-    description='Python API to interact with Liquid Earth',
+    description='Python SDK to interact with Liquid Earth',
     install_requires=read_requirements("requirements.txt", "requirements"),
     setup_requires=['setuptools_scm'],
     use_scm_version={
