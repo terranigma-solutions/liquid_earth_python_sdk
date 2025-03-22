@@ -2,8 +2,8 @@ from dataclasses import asdict
 
 import requests
 
-from liquid_earth_api.core.data import AddDataPostData
-from liquid_earth_api.config import BASE_URL
+from liquid_earth_sdk.core.data import AddDataPostData
+from liquid_earth_sdk.config import BASE_URL
 
 
 def get_deep_link(post_data: AddDataPostData, token: str):

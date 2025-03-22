@@ -3,7 +3,7 @@
 import pytest
 from dotenv import load_dotenv
 
-from liquid_earth_api.api import le_api
+from liquid_earth_sdk.api import le_api
 
 load_dotenv()
 

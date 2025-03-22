@@ -1,9 +1,9 @@
 ﻿import pytest
 from subsurface import optional_requirements
 
-from liquid_earth_api.api import le_api
-from liquid_earth_api.core.data.schemas import DeleteSpacePostData
-from liquid_earth_api.core.output import ServerResponse
+from liquid_earth_sdk.api import le_api
+from liquid_earth_sdk.core.data.schemas import DeleteSpacePostData
+from liquid_earth_sdk.core.output import ServerResponse
 from .test_le_api_test_cases import TestLEApiBase
 
 

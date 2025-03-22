@@ -1,6 +1,6 @@
 ﻿import pytest
 
-from liquid_earth_api.modules.rest_client.rest_interface import get_dev_tokens, generate_dev_token, revoke_dev_token
+from liquid_earth_sdk.modules.rest_client.rest_interface import get_dev_tokens, generate_dev_token, revoke_dev_token
 import dotenv
 import os
 import requests

@@ -1,4 +1,4 @@
-from liquid_earth_api.core.output import AvailableProject
+from liquid_earth_sdk.core.output import AvailableProject
 
 
 def find_space_item(all_projects: list[AvailableProject], space_name: str):

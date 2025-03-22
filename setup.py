@@ -39,7 +39,7 @@ setup(
     use_scm_version={
             "root"            : ".",
             "relative_to"     : __file__,
-            "write_to"        : path.join("liquid_earth_api", "_version.py"),
+            "write_to"        : path.join("liquid_earth_sdk", "_version.py"),
             "fallback_version": "0.0.1"
     },
 )

@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from liquid_earth_api.api.le_api import (
+from liquid_earth_sdk.api.le_api import (
     upload_mesh_to_existing_space,
     upload_mesh_to_new_space,
     get_available_projects,

@@ -1,10 +1,10 @@
 import os
 import pytest
 from dotenv import load_dotenv
-from liquid_earth_api.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
-from liquid_earth_api.api import le_api, _utils_api
-from liquid_earth_api.core.output import AvailableProject
-from liquid_earth_api.modules.rest_client import rest_interface
+from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
+from liquid_earth_sdk.api import le_api, _utils_api
+from liquid_earth_sdk.core.output import AvailableProject
+from liquid_earth_sdk.modules.rest_client import rest_interface
 
 load_dotenv()
 
