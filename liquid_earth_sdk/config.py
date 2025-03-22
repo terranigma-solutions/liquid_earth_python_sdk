@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-backend_override = os.environ.get("BACKEND_OVERRIDE")
+backend_override = os.environ.get("BACKEND_OVERRIDE", [])
 # If backend_override is local host, use the socket.gethostname() to get the local host name
 if "localhost" in backend_override:
     port = backend_override.split(":")[-1].split("/")[0]
