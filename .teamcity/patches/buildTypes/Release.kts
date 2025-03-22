@@ -17,7 +17,7 @@ create(DslContext.projectId, BuildType({
     name = "Release"
 
     params {
-        param("env.PACKAGE_VERSION", "")
+        text("env.PACKAGE_VERSION", "", label = "Package version", description = "The version that I want to release", display = ParameterDisplay.PROMPT, readOnly = true, allowEmpty = true)
     }
 
     vcs {
