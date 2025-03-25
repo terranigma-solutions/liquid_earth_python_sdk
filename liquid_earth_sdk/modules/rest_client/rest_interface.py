@@ -15,7 +15,7 @@ def get_deep_link(post_data: AddDataPostData, token: str) -> any:
     return handle_response(response)  # Use helper to process the response
 
 
-def post_add_data_to_space(post_data: AddDataPostData, token: str) -> dict:
+def post_add_data_to_space(post_data: AddDataPostData, token: str) -> dict[str]:
     response = requests.post(
         url=f"{BASE_URL}/AddDataToSpace",
         json=asdict(post_data),

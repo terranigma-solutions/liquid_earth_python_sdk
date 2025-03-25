@@ -3,6 +3,7 @@ import subsurface
 from . import _utils_api
 from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from ..core.output import ServerResponse, AvailableProject
+from ..modules.blob_client.blob_interface import valid_data_types
 from ..modules.rest_client import rest_interface
 from ..modules.blob_client import blob_interface
 
@@ -22,7 +23,7 @@ def set_token(token: str):
             f.write(f'LIQUID_EARTH_TOKEN={token}\n')
 
 
-def upload_mesh_to_existing_space(space_name: str, data: subsurface.UnstructuredData, file_name: str,
+def upload_mesh_to_existing_space(space_name: str, data: valid_data_types, file_name: str,
                                   token: str, grab_link: bool = True) -> ServerResponse:
 
     # * Make sure file name does not contain .le
@@ -55,13 +56,20 @@ def upload_mesh_to_existing_space(space_name: str, data: subsurface.Unstructured
     return server_response
 
 
-def upload_mesh_to_new_space(space_name: str, data: subsurface.UnstructuredData,
+def upload_mesh_to_new_space(space_name: str, data: valid_data_types,
                              file_name: str, token: str, grab_link: bool = True) -> ServerResponse:
     post_data = AddNewSpacePostData(spaceName=space_name)
     new_project = rest_interface.post_create_space(post_data, token)
     available_project = AvailableProject(**new_project)
     
-    link: Optional[str] = _upload_mesh_common(data, file_name, available_project, grab_link, token)
+    link: Optional[str] = _upload_mesh_common(
+        data=data,
+        file_name=file_name,
+        found_project=available_project,
+        grab_link=grab_link,
+        token=token
+    )
+    
     server_response = ServerResponse(
         deep_link=link,
         available_projects=[available_project],
@@ -83,21 +91,22 @@ def delete_space(delete_space_post_data: DeleteSpacePostData, token: str) -> dic
     return rest_interface.delete_space(delete_space_post_data, token)
 
 
-def _upload_mesh_common(data: "subsurface.UnstructuredData", file_name: str, found_project: AvailableProject,
+def _upload_mesh_common(data: valid_data_types, file_name: str, found_project: AvailableProject,
                         grab_link: bool, token: str) -> Optional[str]:
     post_data: AddDataPostData = AddDataPostData(
         spaceId=found_project.SpaceId,
         ownerId=found_project.OwnerId,
         dataType="static_mesh",
-        fileName=file_name
+        fileName=file_name,
+        texture_ext="png"
     )
-    sas_dict: dict = rest_interface.post_add_data_to_space(post_data, token)
+    sas_dict: dict[str] = rest_interface.post_add_data_to_space(post_data, token)
     if not sas_dict.get("sasForTestLe"):
         raise ValueError("Missing required SAS token in sas_dict")
 
     _ = blob_interface.push_unstructured_data(
-        unstructured_data=data,
-        sas=sas_dict["sasForTestLe"]
+        data_to_push=data,
+        sas=sas_dict
     )
 
     # * Grab link

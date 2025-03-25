@@ -4,6 +4,7 @@ import pytest
 
 import subsurface as ss
 from liquid_earth_sdk.core.output import ServerResponse
+from liquid_earth_sdk.modules.blob_client.blob_interface import DataToPushMesh
 
 from subsurface.modules.reader.mesh._trimesh_reader import _load_with_trimesh
 from liquid_earth_sdk.api import le_api
@@ -52,7 +53,8 @@ def test_OBJ_trimesh_THREE_ELEMENTS_no_texture_to_unstruct():
 
     if True:
         unstruct: ss.UnstructuredData = ts.mesh
-        response: ServerResponse = le_api.upload_mesh_to_new_space(
+        # response: ServerResponse = le_api.upload_mesh_to_new_space(
+        response: ServerResponse = le_api.upload_mesh_to_existing_space(
             space_name="[TEMP] Test PythonSDk: OBJ three element no texture",
             data=unstruct,
             file_name="obj_one_element_no_texture",
@@ -72,15 +74,17 @@ def test_OBJ_ONE_element_texture_to_unstruct():
     )
     ts: ss.TriSurf = ss.modules.reader.mesh._trimesh_reader.trimesh_to_unstruct(trimesh_obj)
 
-    if True:
+    if False:
         s = ss.visualization.to_pyvista_mesh(ts)
         ss.visualization.pv_plot([s], image_2d=False)
 
     if True:
-        unstruct: ss.UnstructuredData = ts.mesh
-        response: ServerResponse = le_api.upload_mesh_to_new_space(
+        response: ServerResponse = le_api.upload_mesh_to_existing_space(
             space_name="[TEMP] Test PythonSDk: OBJ one element one texture",
-            data=unstruct,
+            data=DataToPushMesh(
+                unstructured_data=ts.mesh,
+                texture=ts.texture
+            ),
             file_name="obj_one_element_one_texture",
             token=(os.environ.get("LIQUID_EARTH_API_TOKEN")),
             grab_link=False
@@ -90,7 +94,10 @@ def test_OBJ_ONE_element_texture_to_unstruct():
 
 
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
-def test_OBJ_three_element_texture_to_unstruct():
+def test_OBJ_three_submeshes_texture_to_unstruct():
+    """
+    NOTE (April 25) at this stage we do not support submeshes in liquid earth
+    """
     path_to_obj = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/OBJ/Core scans Boliden/rsrbF9l2zc/model.obj"
     trimesh_obj = _load_with_trimesh(
         path_to_obj=path_to_obj,
