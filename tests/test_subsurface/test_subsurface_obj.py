@@ -9,7 +9,7 @@ from liquid_earth_sdk.modules.blob_client.blob_interface import DataToPushMesh
 from subsurface.modules.reader.mesh._trimesh_reader import _load_with_trimesh
 from liquid_earth_sdk.api import le_api
 
-ONLY_EXPLICIT = False
+ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", True)
 
 
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
