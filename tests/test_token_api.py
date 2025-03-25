@@ -7,8 +7,7 @@ import requests
 
 dotenv.load_dotenv()
 
-# pytestmark = pytest.mark.skip(reason="Run Explicit")
-EXPLICIT = False
+ONLY_EXPLICIT = True
 
 
 def test_token():
@@ -78,7 +77,7 @@ def test_token():
             assert token.get("IsRevoked") is True, "Token should be revoked"
 
 
-@pytest.mark.skipif(EXPLICIT, reason="Run Explicit")
+@pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_login_with_credentials():
     endpoint = os.getenv("LOGIN_URL")
     subscription_key = os.getenv("LOGIN_SUBSCRIPTION_KEY")  # Add this line
@@ -95,7 +94,7 @@ def test_login_with_credentials():
     print(result)
 
 
-@pytest.mark.skipif(EXPLICIT, reason="Run Explicit")
+@pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_get_user_dev_tokens():
     val = get_dev_tokens(
         login_token="Bearer " + os.getenv("TEST_LOGIN_TOKEN")
@@ -103,7 +102,7 @@ def test_get_user_dev_tokens():
     print(val)
 
 
-@pytest.mark.skipif(EXPLICIT, reason="Run Explicit")
+@pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_generate_dev_token():
     val = generate_dev_token(
         token_name="test_token",
@@ -112,7 +111,7 @@ def test_generate_dev_token():
     print(val)
 
 
-@pytest.mark.skipif(EXPLICIT, reason="Run Explicit")
+@pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_revoke_dev_token():
     val = revoke_dev_token(
         token_id="le-8b4c9d33528a4e7492583871f6545ea4IAmNqhThFXeIKMQTzummp0Zdyhejwnqh1iSteK1A55I",
