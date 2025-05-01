@@ -3,5 +3,6 @@
 ezdxf
 gempy
 pooch
+trimesh
 
-git+https://github.com/terranigma-solutions/subsurface.git@2025.0.0b2
+subsurface-terra
