@@ -22,6 +22,7 @@
       <param name="env.LOGIN_SUBSCRIPTION_KEY" value="0d7113b9f2054be8b4e1b350f18a7f72" />
       <param name="env.LOGIN_URL" value="https://liquidearthapim-dev001.azure-api.net/user/login_b2c_license" />
       <param name="env.LOGIN_USER" value="miguel@terranigma-solutions.com" />
+      <param name="env.LOGIN_PAYLOAD" value="grant_type=password&amp;response_type=token id_token&amp;client_id=%env.LOGIN_CLIENT_ID%&amp;scope=openid %env.LOGIN_SCOPE%&amp;username=%env.LOGIN_USER%&amp;password=%env.LOGIN_PASSWORD%" />
       <param name="env.PATH_TO_DXF_DATA_PATH_SMALL" value="%env.TERRA_PATH_DEVOPS%/meshes/shafts_small.dxf" />
       <param name="env.PATH_TO_MX" value="%env.TERRA_PATH_DEVOPS%/meshes/GOCAD/mix/horizons_faults_small.mx" />
       <param name="env.TERRA_PATH_DEVOPS" value="D:/OneDrive - Terranigma Solutions GmbH/Documents - Terranigma Base/DevOps/SubsurfaceTestData/" />
@@ -112,4 +113,3 @@ venv\Scripts\python -m pytest --teamcity -v -m read_mesh]]></param>
     </build-extensions>
   </settings>
 </build-type>
-
