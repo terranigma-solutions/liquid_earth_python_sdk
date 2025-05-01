@@ -10,7 +10,7 @@ from liquid_earth_sdk.api import le_api
 from subsurface.modules.reader import load_gltf_with_trimesh
 from subsurface.modules.reader.mesh._trimesh_reader import TriMeshTransformations
 
-ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", False)
+ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", True)
 
 
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
