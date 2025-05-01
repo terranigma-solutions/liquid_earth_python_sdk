@@ -6,8 +6,8 @@ import subsurface as ss
 from liquid_earth_sdk.core.output import ServerResponse
 from liquid_earth_sdk.modules.blob_client.blob_interface import DataToPushMesh
 
-from subsurface.modules.reader.mesh._trimesh_reader import _load_with_trimesh
 from liquid_earth_sdk.api import le_api
+from subsurface.modules.reader.mesh._trimesh_reader import load_with_trimesh
 
 ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", True)
 
@@ -15,8 +15,8 @@ ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", True)
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_obj_one_element_no_texture():
     path_to_obj = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/OBJ/TexturedMesh/PenguinBaseMesh.obj"
-    trimesh_obj = _load_with_trimesh(
-        path_to_obj=path_to_obj,
+    trimesh_obj = load_with_trimesh(
+        path_to_file_or_buffer=path_to_obj,
         plot=False
     )
     ts: ss.TriSurf = ss.modules.reader.mesh._trimesh_reader.trimesh_to_unstruct(trimesh_obj)
@@ -41,8 +41,8 @@ def test_obj_one_element_no_texture():
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_OBJ_trimesh_THREE_ELEMENTS_no_texture_to_unstruct():
     path_to_obj = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/OBJ/MultiMaterialObj/MultiMaterialObj.obj"
-    trimesh_obj = _load_with_trimesh(
-        path_to_obj=path_to_obj,
+    trimesh_obj = load_with_trimesh(
+        path_to_file_or_buffer=path_to_obj,
         plot=False
     )
     ts: ss.TriSurf = ss.modules.reader.mesh._trimesh_reader.trimesh_to_unstruct(trimesh_obj)
@@ -68,8 +68,8 @@ def test_OBJ_trimesh_THREE_ELEMENTS_no_texture_to_unstruct():
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_OBJ_ONE_element_texture_to_unstruct():
     path_to_obj = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/OBJ/Faces/Lapp_458_Rum_19_2_2024-02-21_0820_scan5_geoim4.obj"
-    trimesh_obj = _load_with_trimesh(
-        path_to_obj=path_to_obj,
+    trimesh_obj = load_with_trimesh(
+        path_to_file_or_buffer=path_to_obj,
         plot=False
     )
     ts: ss.TriSurf = ss.modules.reader.mesh._trimesh_reader.trimesh_to_unstruct(trimesh_obj)
@@ -99,8 +99,8 @@ def test_OBJ_three_submeshes_texture_to_unstruct():
     NOTE (April 25) at this stage we do not support submeshes in liquid earth
     """
     path_to_obj = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/OBJ/Core scans Boliden/rsrbF9l2zc/model.obj"
-    trimesh_obj = _load_with_trimesh(
-        path_to_obj=path_to_obj,
+    trimesh_obj = load_with_trimesh(
+        path_to_file_or_buffer=path_to_obj,
         plot=False
     )
     ts: ss.TriSurf = ss.modules.reader.mesh._trimesh_reader.trimesh_to_unstruct(trimesh_obj)

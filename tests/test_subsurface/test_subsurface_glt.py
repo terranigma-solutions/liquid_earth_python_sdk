@@ -7,7 +7,8 @@ from liquid_earth_sdk.core.output import ServerResponse
 from liquid_earth_sdk.modules.blob_client.blob_interface import DataToPushMesh
 
 from liquid_earth_sdk.api import le_api
-from subsurface.modules.reader.mesh.glb_reader import load_glb_with_trimesh
+from subsurface.modules.reader import load_gltf_with_trimesh
+from subsurface.modules.reader.mesh._trimesh_reader import TriMeshTransformations
 
 ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", False)
 
@@ -15,7 +16,7 @@ ONLY_EXPLICIT = os.getenv("ONLY_EXPLICIT", False)
 @pytest.mark.skipif(ONLY_EXPLICIT, reason="Run Explicit")
 def test_glb_one_element_no_texture():
     glb_path = os.getenv("TERRA_PATH_DEVOPS") + "/meshes/GLB - GLTF/Duck.glb"
-    ts: ss.TriSurf = load_glb_with_trimesh(glb_path)
+    ts: ss.TriSurf = load_gltf_with_trimesh(glb_path, coordinate_system=TriMeshTransformations.RIGHT_HANDED_Z_UP)
 
     if False:
         s = ss.visualization.to_pyvista_mesh(ts)
