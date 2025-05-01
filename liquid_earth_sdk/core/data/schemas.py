@@ -1,4 +1,5 @@
 ﻿from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -7,8 +8,9 @@ class AddDataPostData:
     ownerId: str
     dataType: str
     fileName: str
-    
-    
+    texture_ext: Optional[str] = None
+
+
 @dataclass
 class AddNewSpacePostData:
     spaceName: str

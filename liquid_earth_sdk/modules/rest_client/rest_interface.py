@@ -15,7 +15,7 @@ def get_deep_link(post_data: AddDataPostData, token: str) -> any:
     return handle_response(response)  # Use helper to process the response
 
 
-def post_add_data_to_space(post_data: AddDataPostData, token: str) -> dict:
+def post_add_data_to_space(post_data: AddDataPostData, token: str) -> dict[str]:
     response = requests.post(
         url=f"{BASE_URL}/AddDataToSpace",
         json=asdict(post_data),
@@ -54,29 +54,26 @@ def delete_space(delete_space_post_data: DeleteSpacePostData, token: str) -> dic
     return handle_response(response)
 
 
-def get_dev_tokens(user_id: str, login_token: str) -> dict:
+def get_dev_tokens(login_token: str) -> dict:
     response = requests.get(
         url=f"{BASE_URL}/apikeys",
-        params={"user_id": user_id},
         headers={"Authorization": f"{login_token}"}
     )
     return handle_response(response)
 
 
-def generate_dev_token(user_id: str, token_name: str, login_token: str) -> dict:
+def generate_dev_token(token_name: str, login_token: str) -> dict:
     response = requests.post(
         url=f"{BASE_URL}/apikeys/generate",
-        params={"user_id": user_id},
         json={"name": token_name},
         headers={"Authorization": f"{login_token}"}
     )
     return handle_response(response)
 
 
-def revoke_dev_token(user_id: str, token_id: str, login_token: str) -> dict:
+def revoke_dev_token(token_id: str, login_token: str) -> dict:
     response = requests.post(
         url=f"{BASE_URL}/apikeys/revoke",
-        params={"user_id": user_id},
         json={"keyId": token_id},
         headers={"Authorization": f"{login_token}"}
     )

@@ -55,7 +55,8 @@ class TestLEApiCore(TestLEApiBase):
             spaceId=found_project.SpaceId,
             ownerId=found_project.OwnerId,
             dataType="static_mesh",
-            fileName="test"
+            fileName="test",
+            texture_ext=None
         )
         deep_link = le_api.get_deep_link(
             post_data=post_data,
