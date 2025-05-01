@@ -8,7 +8,7 @@ class AddDataPostData:
     ownerId: str
     dataType: str
     fileName: str
-    texture_ext: Optional[str]
+    texture_ext: Optional[str] = None
 
 
 @dataclass
