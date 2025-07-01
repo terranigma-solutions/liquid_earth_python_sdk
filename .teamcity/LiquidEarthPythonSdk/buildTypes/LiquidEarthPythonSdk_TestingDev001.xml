@@ -18,11 +18,11 @@
       <param name="env.LIQUID_EARTH_API_TOKEN_REVEAL" value="credentialsJSON:d14b7073-3cd7-4e10-a829-2a094b2576a8" spec="password" />
       <param name="env.LOGIN_CLIENT_ID" value="685e08c0-0aac-42f6-80a9-c57440cd2962" />
       <param name="env.LOGIN_PASSWORD" value="credentialsJSON:d61e0721-071f-4838-9940-145fe0709afd" spec="password" />
+      <param name="env.LOGIN_PAYLOAD" value="grant_type=password&amp;response_type=token id_token&amp;client_id=%env.LOGIN_CLIENT_ID%&amp;scope=openid %env.LOGIN_SCOPE%&amp;username=%env.LOGIN_USER%&amp;password=%env.LOGIN_PASSWORD%" />
       <param name="env.LOGIN_SCOPE" value="%env.LOGIN_CLIENT_ID%" />
       <param name="env.LOGIN_SUBSCRIPTION_KEY" value="0d7113b9f2054be8b4e1b350f18a7f72" />
       <param name="env.LOGIN_URL" value="https://liquidearthapim-dev001.azure-api.net/user/login_b2c_license" />
       <param name="env.LOGIN_USER" value="miguel@terranigma-solutions.com" />
-      <param name="env.LOGIN_PAYLOAD" value="grant_type=password&amp;response_type=token id_token&amp;client_id=%env.LOGIN_CLIENT_ID%&amp;scope=openid %env.LOGIN_SCOPE%&amp;username=%env.LOGIN_USER%&amp;password=%env.LOGIN_PASSWORD%" />
       <param name="env.PATH_TO_DXF_DATA_PATH_SMALL" value="%env.TERRA_PATH_DEVOPS%/meshes/shafts_small.dxf" />
       <param name="env.PATH_TO_MX" value="%env.TERRA_PATH_DEVOPS%/meshes/GOCAD/mix/horizons_faults_small.mx" />
       <param name="env.TERRA_PATH_DEVOPS" value="D:/OneDrive - Terranigma Solutions GmbH/Documents - Terranigma Base/DevOps/SubsurfaceTestData/" />
@@ -41,9 +41,8 @@ echo Checking directory...
 dir
 dir .requirements
 
-venv\Scripts\pip install --verbose -r requirements/requirements_dev.txt
+venv\Scripts\pip install --pre --upgrade --verbose -r requirements/requirements_dev.txt
 venv\Scripts\pip install --verbose teamcity-messages]]></param>
-          <param name="teamcity.kubernetes.executor.pull.policy" value="" />
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
@@ -113,3 +112,4 @@ venv\Scripts\python -m pytest --teamcity -v -m read_mesh]]></param>
     </build-extensions>
   </settings>
 </build-type>
+
