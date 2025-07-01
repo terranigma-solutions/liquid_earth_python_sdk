@@ -5,7 +5,7 @@ This is the Python SDK for LiquidEarth. It provides a simple way to interact wit
 Install using pip:
 
 ```bash
-pip install liquid-earth-api
+pip install liquid-earth-sdk
 ```
 
 For a more in depth guide, please refer to the [documentation](https://terranigma.notion.site/Python-API-598fa593676f471b9eb2e34150476b3c).
