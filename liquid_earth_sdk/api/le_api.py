@@ -79,6 +79,61 @@ def upload_mesh_to_new_space(space_name: str, data: valid_data_types,
     return server_response
 
 
+def upload_volume_to_new_space(space_name: str, data: subsurface.StructuredData,
+                               file_name: str, token: str, grab_link: bool = True) -> ServerResponse:
+    post_data = AddNewSpacePostData(spaceName=space_name)
+    new_project = rest_interface.post_create_space(post_data, token)
+    available_project = AvailableProject(**new_project)
+
+    link: Optional[str] = _upload_volume_common(
+        data=data,
+        file_name=file_name,
+        found_project=available_project,
+        grab_link=grab_link,
+        token=token
+    )
+
+    server_response = ServerResponse(
+        deep_link=link,
+        available_projects=[available_project],
+        selected_project=available_project
+    )
+
+    return server_response
+
+
+def upload_volume_to_existing_space(space_name: str, data: subsurface.StructuredData, file_name: str,
+                                    token: str, grab_link: bool = True) -> ServerResponse:
+
+    # * Make sure file name does not contain .le
+    if file_name.endswith('.le'):
+        file_name = file_name[:-3]
+
+    # * grab space
+    available_projects: list[AvailableProject] = get_available_projects(token)
+
+    found_project: AvailableProject = _utils_api.find_space_item(
+        all_projects=available_projects,
+        space_name=space_name
+    )
+
+    link: Optional[str] = _upload_volume_common(
+        data=data,
+        file_name=file_name,
+        found_project=found_project,
+        grab_link=grab_link,
+        token=token
+    )
+
+    server_response = ServerResponse(
+        deep_link=link,
+        available_projects=available_projects,
+        selected_project=found_project
+    )
+
+    return server_response
+
+
 def get_deep_link(post_data: AddDataPostData, token: str) -> str:
     return rest_interface.get_deep_link(post_data, token)
 
@@ -99,6 +154,40 @@ def _upload_mesh_common(data: valid_data_types, file_name: str, found_project: A
         dataType="static_mesh",
         fileName=file_name,
         texture_ext="png"
+    )
+    sas_dict: dict[str] = rest_interface.post_add_data_to_space(post_data, token)
+    if not sas_dict.get("sasForTestLe"):
+        raise ValueError("Missing required SAS token in sas_dict")
+
+    _ = blob_interface.push_unstructured_data(
+        data_to_push=data,
+        sas=sas_dict
+    )
+
+    # * Grab link
+    if grab_link:
+        link = get_deep_link(post_data, token)
+    else:
+        link = None
+
+    return link
+
+
+def _upload_volume_common(data: subsurface.StructuredData, file_name: str, found_project: AvailableProject,
+                          grab_link: bool, token: str) -> Optional[str]:
+    # * Check if bounds are set
+    if data.bounds is None or (isinstance(data.bounds, dict) and not data.bounds):
+        data.bounds = {
+            "X": (0.0, 1.0),
+            "Y": (0.0, 1.0),
+            "Z": (0.0, 1.0)
+        }
+
+    post_data: AddDataPostData = AddDataPostData(
+        spaceId=found_project.SpaceId,
+        ownerId=found_project.OwnerId,
+        dataType="volumes",
+        fileName=file_name,
     )
     sas_dict: dict[str] = rest_interface.post_add_data_to_space(post_data, token)
     if not sas_dict.get("sasForTestLe"):
