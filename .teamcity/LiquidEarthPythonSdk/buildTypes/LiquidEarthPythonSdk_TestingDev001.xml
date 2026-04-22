@@ -32,17 +32,26 @@
     <build-runners>
       <runner id="Setup" name="Setup" type="simpleRunner">
         <parameters>
-          <param name="script.content"><![CDATA[@echo on
-python -m venv venv
-call venv\Scripts\activate
-venv\Scripts\python -m pip install --upgrade pip
+          <param name="script.content"><![CDATA[#!/bin/bash
+set -ex  # enable debug output and exit on error
 
-echo Checking directory...
-dir
-dir .requirements
+# 1. Use the absolute path to the Python binary directly
+/home/leguark/.local/share/mise/installs/python/3.13.9/bin/python3 -m venv venv
 
-venv\Scripts\pip install --pre --upgrade --verbose -r requirements/requirements_dev.txt
-venv\Scripts\pip install --verbose teamcity-messages]]></param>
+# Activate the virtual environment
+source venv/bin/activate
+
+# Upgrade pip
+venv/bin/python -m pip install --upgrade pip
+
+echo "Checking directory contents..."
+ls -la
+ls -la requirements
+
+echo "Installing stable version"
+venv/bin/pip install --verbose -r requirements/dev-requirements.txt
+
+venv/bin/pip install --verbose teamcity-messages]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
