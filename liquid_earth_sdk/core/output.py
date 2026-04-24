@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 
 class AvailableProject(BaseModel):
-    CreationDate: str
+    CreationDate: Optional[str] = None
     DisplayedOwner: str
-    Name: str
+    Name: Optional[str] = None
     OwnerId: str
     SpaceId: str
 

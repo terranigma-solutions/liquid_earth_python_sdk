@@ -42,7 +42,11 @@ def push_unstructured_data(data_to_push: valid_data_types, sas: dict[str]) -> bo
                     _push_texture_to_png(data_to_push.texture, sas, logger)
             case subsurface.StructuredData():
                 # Handle structured data
-                raise NotImplementedError()
+                _push_struct_to_le(
+                    structured_data=data_to_push,
+                    sas=sas,
+                    logger=logger
+                )
             case _:
                 raise TypeError(f"Unsupported data type: {type(data_to_push)}")
         return True
@@ -99,3 +103,20 @@ def _push_texture_to_png(texture: subsurface.StructuredData, sas: dict[str], log
     )
 
     logger.info(f"Successfully uploaded texture blob: {sas}")
+
+
+def _push_struct_to_le(logger, sas: dict[str], structured_data: subsurface.StructuredData):
+    sas = sas.get("sasForTestLe", None)
+    if not sas:
+        raise ValueError("Missing required SAS token in sas_dict")
+    binary_data = structured_data.to_binary()
+    # Initialize blob client and create data stream
+    blob_client = BlobClient.from_blob_url(sas)
+    data_stream = BytesIO(binary_data)
+    # Upload data to blob storage
+    upload_result: dict = blob_client.upload_blob(
+        data_stream,
+        blob_type="BlockBlob",
+        overwrite=True
+    )
+    logger.info(f"Successfully uploaded structured blob: {upload_result}")
