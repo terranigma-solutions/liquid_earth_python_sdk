@@ -1,9 +1,11 @@
 import os
 import pytest
+import numpy as np
+import subsurface
 from dotenv import load_dotenv
 from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
 from liquid_earth_sdk.api import le_api, _utils_api
-from liquid_earth_sdk.core.output import AvailableProject
+from liquid_earth_sdk.core.output import AvailableProject, ServerResponse
 from liquid_earth_sdk.modules.rest_client import rest_interface
 
 load_dotenv()
@@ -70,3 +72,34 @@ class TestLEApiCore(TestLEApiBase):
         )
 
         assert response is not None
+
+    def test_upload_volume_to_new_space(self):
+        # Create a mock subsurface.StructuredData with 10x10x10 random numbers between 0.0 and 10.0
+        data = np.random.uniform(0.0, 10.0, (10, 10, 10))
+        sd = subsurface.StructuredData.from_numpy(data)
+
+        # Upload volume to new space
+        # Note: This will actually call the API if user_token is valid.
+        # Given the existing tests in this file seem to be integration tests
+        # (they use os.environ.get("LIQUID_EARTH_API_TOKEN")), I will follow that pattern.
+        # If the token is missing, the test should probably be skipped or fail gracefully
+        # depending on how other tests handle it.
+        if not self.user_token:
+            pytest.skip("LIQUID_EARTH_API_TOKEN not set")
+
+        space_name =  "[TEMP] volume api test 3"
+        server_response: ServerResponse = le_api.upload_volume_to_new_space(
+            space_name=space_name,
+            data=sd,
+            file_name="test_volume",
+            token=self.user_token
+        )
+
+        assert server_response is not None
+        assert server_response.selected_project.Name == space_name
+        print (server_response.selected_project.SpaceId)
+        # Cleanup
+      #  le_api.delete_space(
+      #      delete_space_post_data=DeleteSpacePostData(spaceId=server_response.selected_project.SpaceId),
+      #      token=self.user_token
+      #  )
