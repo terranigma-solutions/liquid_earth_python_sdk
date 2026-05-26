@@ -25,7 +25,7 @@
       <param name="env.LOGIN_USER" value="miguel@terranigma-solutions.com" />
       <param name="env.PATH_TO_DXF_DATA_PATH_SMALL" value="%env.TERRA_PATH_DEVOPS%/meshes/shafts_small.dxf" />
       <param name="env.PATH_TO_MX" value="%env.TERRA_PATH_DEVOPS%/meshes/GOCAD/mix/horizons_faults_small.mx" />
-      <param name="env.TERRA_PATH_DEVOPS" value="Data/OneDrive/Terranigma/DevOps/SubsurfaceTestData/" />
+      <param name="env.TERRA_PATH_DEVOPS" value="home/leguark/Data/OneDrive/Terranigma/DevOps/SubsurfaceTestData/" />
       <param name="env.TEST_LOGIN_TOKEN" value="Not sure how to set this yet" />
       <param name="env.TEST_USER_ID" value="43773b72-feae-495d-a1d9-e529dc64da9f" />
     </parameters>
