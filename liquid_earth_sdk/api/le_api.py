@@ -1,7 +1,9 @@
 from typing import Union, Optional
-import subsurface
 from . import _utils_api
-from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
+from liquid_earth_sdk.core.data.schemas import (
+    AddDataPostData, AddNewSpacePostData, DeleteSpacePostData,
+    ChangeSpaceRolePostData, ImportDataToSpacePostData, GetSpaceUpdatesPostData
+)
 from ..core.output import ServerResponse, AvailableProject
 from ..modules.blob_client.blob_interface import valid_data_types
 from ..modules.rest_client import rest_interface
@@ -89,6 +91,79 @@ def get_available_projects(token: str):
 
 def delete_space(delete_space_post_data: DeleteSpacePostData, token: str) -> dict:
     return rest_interface.delete_space(delete_space_post_data, token)
+
+
+def change_space_role(
+    space_id: str,
+    owner_id: str,
+    target_email: str,
+    permissions: int,
+    token: str
+) -> dict:
+    post_data = ChangeSpaceRolePostData(
+        spaceId=space_id,
+        ownerId=owner_id,
+        targetEmail=target_email,
+        permissions=permissions
+    )
+    return rest_interface.change_space_role(post_data, token)
+
+
+def import_data_to_space(
+    space_id: str,
+    owner_id: str,
+    path_in: str,
+    type_of_import: str,
+    token: str,
+    transformation: dict | None = None,
+    attr_name: str | None = None,
+    missing_value: float | None = None,
+    band: int | None = None,
+    collar_reader: dict | None = None,
+    survey_reader: dict | None = None,
+    attrs_reader: dict | None = None,
+    is_lith_attr: bool | None = None,
+    number_nodes: int | None = None,
+    vertex_reader: dict | None = None,
+    edges_reader: dict | None = None,
+    cells_attrs_reader: dict | None = None,
+    vertex_attrs_reader: dict | None = None,
+    coord_reader: dict | None = None,
+    interpolation_resolution: list | None = None,
+    path_in_msh: str | None = None,
+    path_in_mod_or_den: str | None = None,
+    **kwargs
+) -> dict:
+    post_data = ImportDataToSpacePostData(
+        spaceId=space_id,
+        ownerId=owner_id,
+        path_in=path_in,
+        type_of_import=type_of_import,
+        transformation=transformation,
+        attr_name=attr_name,
+        missing_value=missing_value,
+        band=band,
+        collar_reader=collar_reader,
+        survey_reader=survey_reader,
+        attrs_reader=attrs_reader,
+        is_lith_attr=is_lith_attr,
+        number_nodes=number_nodes,
+        vertex_reader=vertex_reader,
+        edges_reader=edges_reader,
+        cells_attrs_reader=cells_attrs_reader,
+        vertex_attrs_reader=vertex_attrs_reader,
+        coord_reader=coord_reader,
+        interpolation_resolution=interpolation_resolution,
+        path_in_msh=path_in_msh,
+        path_in_mod_or_den=path_in_mod_or_den,
+        path_out=kwargs.pop("path_out", None),
+    )
+    return rest_interface.import_data_to_space(post_data, token)
+
+
+def get_space_updates(space_id: str, token: str) -> dict:
+    post_data = GetSpaceUpdatesPostData(spaceId=space_id)
+    return rest_interface.get_space_updates(post_data, token)
 
 
 def _upload_mesh_common(data: valid_data_types, file_name: str, found_project: AvailableProject,

@@ -7,7 +7,10 @@ from liquid_earth_sdk.api.le_api import (
     upload_mesh_to_existing_space,
     upload_mesh_to_new_space,
     get_available_projects,
-    get_deep_link
+    get_deep_link,
+    change_space_role,
+    import_data_to_space,
+    get_space_updates,
 )
 # Version.
 
