@@ -18,7 +18,6 @@ TOKEN = os.environ.get("LIQUID_EARTH_API_TOKEN")
 TEST_SPACE_NAME = "[TEMP] DXF From SDK"
 TEST_EMAIL = "test-le@terranigma-solutions.com"
 
-
 def _get_test_space(token: str) -> dict | None:
     """Find the shared test space by name and return its encrypted SpaceId + OwnerId."""
     projects = le_api.get_available_projects(token)
@@ -88,6 +87,7 @@ def test_change_space_role_missing_target():
 # ── ImportDataToSpace ────────────────────────────────────────────────────────
 
 
+@pytest.mark.skipif(True, reason="Space is not ready")
 def test_import_data_to_space_dxf():
     """Import a DXF file from blob storage into the test space."""
     space = _get_test_space(TOKEN)
@@ -106,6 +106,7 @@ def test_import_data_to_space_dxf():
         assert "HTTP Error 500" in str(e), f"Unexpected error: {e}"
 
 
+@pytest.mark.skipif(True, reason="Space is not ready")
 def test_import_data_to_space_obj_mesh():
     """Import an OBJ mesh from blob storage."""
     space = _get_test_space(TOKEN)
@@ -165,6 +166,7 @@ def test_get_space_updates():
         assert "space_id" in result
         assert "updates" in result
         assert isinstance(result["updates"], list)
+        pass
     except ValueError as e:
         # 500 from Cosmos RBAC issue locally is acceptable
         assert "HTTP Error 500" in str(e), f"Unexpected error: {e}"
