@@ -1,6 +1,9 @@
 from liquid_earth_sdk.core.output import AvailableProject
 from liquid_earth_sdk.modules.rest_client._utils import handle_response
-from liquid_earth_sdk.core.data.schemas import AddNewSpacePostData, AddDataPostData, DeleteSpacePostData
+from liquid_earth_sdk.core.data.schemas import (
+    AddNewSpacePostData, AddDataPostData, DeleteSpacePostData,
+    ChangeSpaceRolePostData, ImportDataToSpacePostData, GetSpaceUpdatesPostData
+)
 import requests
 from dataclasses import asdict
 from liquid_earth_sdk.config import BASE_URL
@@ -76,5 +79,32 @@ def revoke_dev_token(token_id: str, login_token: str) -> dict:
         url=f"{BASE_URL}/apikeys/revoke",
         json={"keyId": token_id},
         headers={"Authorization": f"{login_token}"}
+    )
+    return handle_response(response)
+
+
+def change_space_role(post_data: ChangeSpaceRolePostData, token: str) -> dict:
+    response = requests.post(
+        url=f"{BASE_URL}/ChangeSpaceRole",
+        json=asdict(post_data),
+        headers={"Authorization": f"{token}"}
+    )
+    return handle_response(response)
+
+
+def import_data_to_space(post_data: ImportDataToSpacePostData, token: str) -> dict:
+    response = requests.post(
+        url=f"{BASE_URL}/ImportDataToSpace",
+        json=asdict(post_data),
+        headers={"Authorization": f"{token}"}
+    )
+    return handle_response(response)
+
+
+def get_space_updates(post_data: GetSpaceUpdatesPostData, token: str) -> dict:
+    response = requests.post(
+        url=f"{BASE_URL}/GetSpaceUpdates",
+        json=asdict(post_data),
+        headers={"Authorization": f"{token}"}
     )
     return handle_response(response)
