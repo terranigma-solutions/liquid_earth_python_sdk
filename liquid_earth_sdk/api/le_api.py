@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, List
 import subsurface
 from . import _utils_api
 from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
@@ -57,8 +57,9 @@ def upload_mesh_to_existing_space(space_name: str, data: valid_data_types, file_
 
 
 def upload_mesh_to_new_space(space_name: str, data: valid_data_types,
-                             file_name: str, token: str, grab_link: bool = True) -> ServerResponse:
-    post_data = AddNewSpacePostData(spaceName=space_name)
+                             file_name: str, token: str, grab_link: bool = True,
+                             extent: Optional[List[float]] = None) -> ServerResponse:
+    post_data = AddNewSpacePostData(spaceName=space_name, extent=_validate_extent(extent))
     new_project = rest_interface.post_create_space(post_data, token)
     available_project = AvailableProject(**new_project)
     
@@ -80,8 +81,9 @@ def upload_mesh_to_new_space(space_name: str, data: valid_data_types,
 
 
 def upload_volume_to_new_space(space_name: str, data: subsurface.StructuredData,
-                               file_name: str, token: str, grab_link: bool = True) -> ServerResponse:
-    post_data = AddNewSpacePostData(spaceName=space_name)
+                               file_name: str, token: str, grab_link: bool = True,
+                               extent: Optional[List[float]] = None) -> ServerResponse:
+    post_data = AddNewSpacePostData(spaceName=space_name, extent=_validate_extent(extent))
     new_project = rest_interface.post_create_space(post_data, token)
     available_project = AvailableProject(**new_project)
 
@@ -132,6 +134,15 @@ def upload_volume_to_existing_space(space_name: str, data: subsurface.Structured
     )
 
     return server_response
+
+
+def _validate_extent(extent: Optional[List[float]]) -> Optional[List[float]]:
+    # * Space extent is [minX, maxX, minY, maxY, minZ, maxZ]; None lets the backend apply its default
+    if extent is None:
+        return None
+    if len(extent) != 6:
+        raise ValueError("extent must have exactly 6 values: [minX, maxX, minY, maxY, minZ, maxZ]")
+    return [float(v) for v in extent]
 
 
 def get_deep_link(post_data: AddDataPostData, token: str) -> str:
