@@ -1,4 +1,6 @@
 import os
+from dataclasses import asdict
+
 import pytest
 import numpy as np
 import subsurface
@@ -72,6 +74,63 @@ class TestLEApiCore(TestLEApiBase):
         )
 
         assert response is not None
+
+    def test_new_space_with_extent_serialization_and_validation(self):
+        # * Extent is sent as [minX, maxX, minY, maxY, minZ, maxZ]
+        extent = [0.0, 100.0, 0.0, 200.0, -50.0, 50.0]
+
+        space = AddNewSpacePostData(spaceName=self.space_name, extent=extent)
+        payload = asdict(space)
+        assert payload["extent"] == extent
+
+        # * Omitting the extent must serialize to None so the backend applies its default
+        assert asdict(AddNewSpacePostData(spaceName=self.space_name))["extent"] is None
+
+        # * A malformed extent must be rejected before hitting the network
+        with pytest.raises(ValueError):
+            le_api.upload_mesh_to_new_space(
+                space_name=self.space_name,
+                data=None,
+                file_name="test",
+                token="le-fake",
+                extent=[0.0, 1.0, 0.0]
+            )
+
+    @pytest.mark.parametrize("extent", [
+        [0.0, 1.0, 0.0, 1.0, 0.0, float("nan")],
+        [0.0, float("inf"), 0.0, 1.0, 0.0, 1.0],
+        [1.0, 1.0, 0.0, 1.0, 0.0, 1.0],
+        [0.0, 1.0, 5.0, 2.0, 0.0, 1.0],
+    ])
+    def test_new_space_with_invalid_extent_values(self, extent):
+        # * Non-finite values and min >= max on any axis are rejected like the backend does
+        with pytest.raises(ValueError):
+            le_api.upload_volume_to_new_space(
+                space_name=self.space_name,
+                data=None,
+                file_name="test",
+                token="le-fake",
+                extent=extent
+            )
+
+    def test_new_space_with_extent_create_and_delete(self):
+        if not self.user_token:
+            pytest.skip("LIQUID_EARTH_API_TOKEN not set")
+
+        extent = [0.0, 100.0, 0.0, 200.0, -50.0, 50.0]
+        space = AddNewSpacePostData(spaceName=self.space_name, extent=extent)
+
+        response = rest_interface.post_create_space(space, self.user_token)
+        assert response is not None
+
+        all_projects = le_api.get_available_projects(token=self.user_token)
+        found_project: AvailableProject = _utils_api.find_space_item(all_projects, self.space_name)
+
+        delete_response = le_api.delete_space(
+            delete_space_post_data=DeleteSpacePostData(spaceId=found_project.SpaceId),
+            token=self.user_token
+        )
+        assert delete_response is not None
 
     def test_upload_volume_to_new_space(self):
         # Create a mock subsurface.StructuredData with 10x10x10 random numbers between 0.0 and 10.0
