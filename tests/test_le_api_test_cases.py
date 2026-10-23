@@ -96,6 +96,23 @@ class TestLEApiCore(TestLEApiBase):
                 extent=[0.0, 1.0, 0.0]
             )
 
+    @pytest.mark.parametrize("extent", [
+        [0.0, 1.0, 0.0, 1.0, 0.0, float("nan")],
+        [0.0, float("inf"), 0.0, 1.0, 0.0, 1.0],
+        [1.0, 1.0, 0.0, 1.0, 0.0, 1.0],
+        [0.0, 1.0, 5.0, 2.0, 0.0, 1.0],
+    ])
+    def test_new_space_with_invalid_extent_values(self, extent):
+        # * Non-finite values and min >= max on any axis are rejected like the backend does
+        with pytest.raises(ValueError):
+            le_api.upload_volume_to_new_space(
+                space_name=self.space_name,
+                data=None,
+                file_name="test",
+                token="le-fake",
+                extent=extent
+            )
+
     def test_new_space_with_extent_create_and_delete(self):
         if not self.user_token:
             pytest.skip("LIQUID_EARTH_API_TOKEN not set")

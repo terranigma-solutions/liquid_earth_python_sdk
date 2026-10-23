@@ -1,4 +1,6 @@
 from typing import Union, Optional, List
+import math
+
 import subsurface
 from . import _utils_api
 from liquid_earth_sdk.core.data.schemas import AddDataPostData, AddNewSpacePostData, DeleteSpacePostData
@@ -140,9 +142,16 @@ def _validate_extent(extent: Optional[List[float]]) -> Optional[List[float]]:
     # * Space extent is [minX, maxX, minY, maxY, minZ, maxZ]; None lets the backend apply its default
     if extent is None:
         return None
+    # * Mirrors the backend checks so a bad extent fails before a request is sent
     if len(extent) != 6:
         raise ValueError("extent must have exactly 6 values: [minX, maxX, minY, maxY, minZ, maxZ]")
-    return [float(v) for v in extent]
+    values = [float(v) for v in extent]
+    if not all(math.isfinite(v) for v in values):
+        raise ValueError("extent values must all be finite numbers")
+    for axis, (min_value, max_value) in zip("XYZ", (values[0:2], values[2:4], values[4:6])):
+        if min_value >= max_value:
+            raise ValueError(f"extent is invalid on the {axis} axis: min ({min_value}) must be less than max ({max_value})")
+    return values
 
 
 def get_deep_link(post_data: AddDataPostData, token: str) -> str:
